@@ -1,0 +1,156 @@
+{
+  "toolName": "Lenticular Lenses",
+  "projectName": "Project Y",
+  "pages": [
+    {
+      "pageName": "Home",
+      "projectList": [
+        {"prName":"How many couples went to the notary after announcing their marriage? ", "prDescription":"We expect couples to visit a notary to make their prenuptial agreement before getting married. To answer this question we use the Prenuptial agreements from the Notarial Acts of the Amsterdam City Archives and the Intended Marriage Registry. "},
+        {"prName":"RIJKSMUSEUM-ECARTICO 20200122", "prDescription":"RIJKSMUSEUM-ECARTICO 20200122"}
+      ]
+    },
+    {
+      "pageName": "Data selection - list",
+      "pageTitle": "",
+      "pageNavDs": true,
+      "pageNavAl": false,
+      "pageTitle": "",
+      "introductionText": "The data selection contains the selections of datasets you will work with. They can be entities with filters on them.",
+      "dsList": [
+        {"dsName":"Marriages in 1600-1649", "dsDataset":"Index op notarieel archief", "dsProvider":"Stadsarchief Amsterdam"},
+        {"dsName":"Marriages in the 17th Century", "dsDataset":"Index op notarieel archief", "dsProvider":"Stadsarchief Amsterdam"},
+        {"dsName":"Marriages in the 18th Century", "dsDataset":"Index op notarieel archief", "dsProvider":"Stadsarchief Amsterdam"}
+      ]
+    },
+    {
+      "pageName": "modal select dataset",
+      "pageNavDs": true,
+      "pageNavAl": false,
+      "datasetList": [
+        {"field1": "Inventaris 5075x", "field2": "Stadsarchief Amsterdam"},
+        {"field1": "Inventaris 5073", "field2": "Stadsarchief Amsterdam"},
+        {"field1": "Inventaris 5072", "field2": "Stadsarchief Amsterdam"},
+        {"field1": "Linkset: Alignment 1 STCN-Onstage", "field2": "Universiteit van Amsterdam"},
+        {"field1": "Onstage", "field2": "Universiteit van Amsterdam"},
+        {"field1": "Short-Title Catalogue Netherlands (STCN)", "field2": "Koninklijke Bibliotheek"},
+        {"field1": "Inventaris 5075x", "field2": "Stadsarchief Amsterdam"},
+        {"field1": "Inventaris 5073", "field2": "Stadsarchief Amsterdam"},
+        {"field1": "Inventaris 5072", "field2": "Stadsarchief Amsterdam"}
+      ],
+      "detailInfoName": "Index op doopregister",
+      "detailInfoProvider": "Stadsarchief Amsterdam",
+      "detailInfodescription": "One-on-one conversion of the Index op ondertrouwregisters to RDF by Golden Agents.",
+      "detailInfoEntities": [
+        {"field1": "bio_Marriage"},
+        {"field1": "pnv_PersonName"},
+        {"field1": "saa_IndexOpOndertrouwregisters"},
+        {"field1": "saa_PrenuptialAgreement"},
+        {"field1": "sem_Event"},
+        {"field1": "sem_Role"},
+        {"field1": "sem_RoleType"},
+        {"field1": "tim_unknown"}
+      ]
+    },
+    {
+      "pageName": "Alignment- list",
+      "pageTitle": "",
+      "pageNavDs": false,
+      "pageNavAl": true,
+      "introductionText": "The data selection contains the selections of datasets you will work with. They can be entities with filters on them.",
+      "alignmentList": [
+        {"prName": "Getty & Frick vs NA:: approx Lev 0,7", "prSource":"7634", "prTarget": "232.113", "prLinks": "345", "prCusters": "33", "prStatus": "Matched-Clustered"},
+        {"prName": "Getty & Frick vs NA:: soundex 0,85",   "prSource":"2344", "prTarget": "32.233", "prLinks": "156", "prCusters": "11", "prStatus": "Matched-Clustered"},
+        {"prName": "Getty vs Frick:: Lev 7",               "prSource":"7634", "prTarget": "32.233", "prLinks": "345", "prCusters": "", "prStatus": "Matched"},
+        {"prName": "Getty vs Frick:: soundex 0,85::",      "prSource":"7634", "prTarget": "232.113", "prLinks": "145", "prCusters": "15", "prStatus": "Matched-Clustered"},
+        {"prName": "Getty vs NA:: Lev 7",                  "prSource":"2455", "prTarget": "232.113", "prLinks": "145", "prCusters": "", "prStatus": "Matched"},
+        {"prName": "Getty vs NA:: approx Lev 0,7",         "prSource":"3765", "prTarget": "756", "prLinks": "145", "prCusters": "125", "prStatus": "Matched-Clustered"}
+      ]
+    },
+    {
+      "pageName": "Alignment- detail",
+      "pageTitle": "2. B) PERSON:: Getty vs Frick:: Lev approx 0,7 = VALIDATED!",
+      "pageNavDs": false,
+      "pageNavAl": true,
+      "infoLinks":"24",
+      "infoClusters":"45",
+      "infoSources":"455",
+      "infoTargets":"136,823",
+      "matchSetSrc": ["Frick experiment [type: saa_Inventory]:: Notarial Acts ONLY","GPI experiment [type: saa_Inventory]:: Notarial Acts ONLY"],
+      "matchSetTrg": [
+        "Stadsarchief Amsterdam: Index op notarieel archief [type: saa_HuwelijkseVoorwaarden]",
+        "Stadsarchief Amsterdam: Index op notarieel archief [type: saa_Boedelscheiding]",
+        "Stadsarchief Amsterdam: Index op notarieel archief [type: saa_Boedelinventaris]",
+        "Stadsarchief Amsterdam: Index op notarieel archief [type: saa_Testament]"
+      ],
+      "links": [
+        {"sEntity": "foaf_name", "sName":"Mary Jans", "sUri": "http://www.vondel.humanities.uva.nl/onstage/persons/2236", "strenght": "1.000", "tEntity": "foaf_name", "tName":"Mary Jans", "tUri": "http://www.vondel.humanities.uva.nl/onstage/persons/2236"},
+        {"sEntity": "foaf_name", "sName":"Mary Jans", "sUri": "http://www.vondel.humanities.uva.nl/onstage/persons/2236", "strenght": "1.000", "tEntity": "foaf_name", "tName":"Mary Jans", "tUri": "http://www.vondel.humanities.uva.nl/onstage/persons/2236"},
+        {"sEntity": "foaf_name", "sName":"Mary Jans", "sUri": "http://www.vondel.humanities.uva.nl/onstage/persons/2236", "strenght": "1.000", "tEntity": "foaf_name", "tName":"Mary Jans", "tUri": "http://www.vondel.humanities.uva.nl/onstage/persons/2236"}
+      ],
+      "clusters":[
+        {"size":"","links":"","sEntity": "foaf_name", "sName":"Mary Jans","tEntity": "Schema_Name", "tName":"Brugge-Antwerpen1", "ext":"x","reconc":"x", "id":"2345252455"},
+        {"size":"","links":"","sEntity": "foaf_name", "sName":"Mary Jans","tEntity": "Schema_Name", "tName":"Brugge-Antwerpen", "ext":"x","reconc":"x", "id":"2345213444"},
+        {"size":"","links":"","sEntity": "foaf_name", "sName":"Mary Jans","tEntity": "Schema_Name", "tName":"Brugge-Antwerpen", "ext":"x","reconc":"x", "id":"2345278772"}
+      ]
+    },
+    {
+      "pageName": "Alignment-LinkCompare",
+      "pageNavDs": false,
+      "pageNavAl": true,
+      "nr": "1",
+      "strenght":"1.000",
+      "sUri": "http://goldenagents.org/uva/SAA/Inventory/N-2048",
+      "sourceItems":[
+        {
+          "label": "RDFS_LABEL", "content": "Berrewijns, Barbara"},
+        {
+          "label": "RDFS_COMMENTLIST", "content": "Staet en inventaris van den boedel ende goederen van sal. Barbara Berrewijns, de weduwe was van Pieter Boudart ... op requisitie van Nicolaes Cocquis ten overstaen van den selven, item Jan Wijs ende des overledens suster Juffr. [left blank] Berrewijns. No postscript in microfilm. Barbara Berrewijns, living on the South side of the Lelijgracht, paid a tax of 185 f. in 1631 (Kohier, fol. 304, p. 69). She was the widow of Pieter Boudart, who is perhaps identical with Pieter Boddart of INVNO 586 who died about 1626. In that case she would have been his second wife (he is known to have married Maria Bave in 1610). Barbara Berrewijns may have been the daughter of Bernard Berrewins (of R 29783 of Montias2) and the sister of Sara Berrewijns of INVNO 1181, of Maria Berwijns, married to Stevn Pinel (of INVNO 715), and of Cornelia Berwijns, married to Pieter Rombout. Jan Wijs (of R 25596), who supervised the inventory, was the son of Sara Berwijns. Among the assets of the estate: an obligation in the names of Ferdinandus and Frederick Schuylenburgh (of R 25764 and R 34736 of Montias2) for 1,842 f. 15 st. 8 pen."
+        }
+
+      ],
+      "tUri": "http://goldenagents.org/uva/S1-fbed-50d2-b20db3ba27f1",
+      "TargetItems":[
+        {
+          "label": "PVN_LITERALNAME", "content": "Barbara BerrewijnsBarent Barwijns<br>Barent Berrewijns<br>... Bullingerus<br>Christoffel Rapoen<br>Cornelia Boudart<br>Cornelis Gerrijtsen Bloot<br>Cornelis Rutgers<br>Cornelis Wilmerdonck<br>Dingnom Jans<br> Schuijlenborg<br>Fredrick Schuijlenborg<br>Hans Francken<br>Jacob van Scheenen<br>Martijn Ardinois<br>Nicolaes Cocquis<br>Pieter Hillens<br>Pouwels Timmerman<br>Rombout la Feer<br>Willem Tobiassen<br>"
+        }
+      ]
+    },
+    {
+      "pageName": "Cluster view",
+      "sourceList": [
+        {"field1":"Marritje Jans", "field2":"Duinkerken", "field3":"ecartico/persons/14013"},
+        {"field1":"Marritje Jans", "field2":"Duinkerken", "field3":"ecartico/persons/14013"},
+        {"field1":"Marritje Jans", "field2":"Duinkerken", "field3":"ecartico/persons/14013"}
+      ],
+      "targetList": [
+        {"field1":"Marritje Jans", "field2":"Duinkerken", "field3":"ecartico/persons/14013"},
+        {"field1":"Marritje Jans", "field2":"Duinkerken", "field3":"ecartico/persons/14013"},
+        {"field1":"Marritje Jans", "field2":"Duinkerken", "field3":"ecartico/persons/14013"}
+      ]
+    },
+    {
+      "pageName": "DataSelection detail",
+      "pageTitle": " Marriages in 1600-1649",
+      "pageNavDs": false,
+      "pageNavAl": true,
+      "filters": [
+        {
+          "filterNr":1,
+          "filterSetting": "OR",
+          "filterRows": [
+            {"entitys": ["pnv_hasName","pnv_PersonName","ns1_ontology_isInRecordList","ns1_ontology_Boedelinventaris","rdf_type"]}
+          ],
+          "condition":"Has value"
+        },
+        {
+          "filterNr":2,
+          "filterSetting": "OR",
+          "filterRows": [
+            {"entitys": ["pnv_hasName","pnv_PersonName","ns1_ontology_isInRecordList","ns1_ontology_Boedelinventaris","rdf_type"]}
+          ],
+          "condition":"Has value"
+        }
+      ]
+    }
+  ]
+}
