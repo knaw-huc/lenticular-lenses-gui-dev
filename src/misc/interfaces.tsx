@@ -18,7 +18,7 @@ export interface IDataSelectionListPage {
     "pageNavDs": boolean,
     "pageNavAl": boolean,
     "introductionText": string,
-    "dsList": IDsList
+    "dsList": IDsList[]
 }
 
 export interface IDsList {
@@ -35,7 +35,7 @@ export interface IModalSelectDatasetPage {
     "detailInfoName": string,
     "detailInfoProvider": string,
     "detailInfodescription": string,
-    "detailInfoEntities": ISingleList
+    "detailInfoEntities": ISingleList[]
 }
 
 export interface ISingleList {

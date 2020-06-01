@@ -1,9 +1,10 @@
 import React from 'react';
-import {HcLlListItemMinimal, HcLlListItemMinimal2Fields, HcLlListLabel, HcLlListItemDataSelection, HcLlListItemAlignment, HcResultListPaging,HcLlListItemAlignmentLinks, HcLlListItemAlignmentClusters} from './llListItems';
-import {HcLlSubNavigation} from './llUtils';
-import {HclLIconDataSelection, HclLIconAlignment} from './golden-agents';
+import {HcLlListItemMinimal, HcLlListItemMinimal2Fields, HcLlListLabel, HcLlListItemDataSelection, HcLlListItemAlignment, HcResultListPaging,HcLlListItemAlignmentLinks, HcLlListItemAlignmentClusters} from './ListItems';
+import {HcLlSubNavigation} from './Utils';
+import {HclLIconDataSelection, HclLIconAlignment} from './GoldenAgents';
+import {IHomePage} from "../../misc/interfaces";
 
-export function HcLlLayoutHome(props: {pageData: object}) {
+export function HcLlLayoutHome(props: {pageData: IHomePage}) {
 
         return (<div className="hcContentContainer hcMarginBottom4 hcMarginTop5">
             <div className="hc2columns">
@@ -59,7 +60,7 @@ export class HcLlLayoutProjectDetail extends React.Component {
 
                     <h3>Project description</h3>
                     Start a new project to reconcile one or more datasets.
-                    <textarea rows="4" className="hcMarginBottom1"></textarea>
+                    <textarea rows={4} className="hcMarginBottom1"></textarea>
 
                     <button type="button">Save project</button>
                 </div>

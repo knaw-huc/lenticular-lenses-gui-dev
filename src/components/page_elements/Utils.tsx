@@ -47,7 +47,7 @@ export function HcLlCompareItem(props: { label: string, content: string }) {
 }
 
 
-export function HcLlAlignmantInfoBar(props: { infoSources: string, infoTargets: string, infoLinks: string, infoClusters: string }) {
+export function HcLlAlignmantInfoBar(props: { infoSources: number, infoTargets: number, infoLinks: number, infoClusters: number }) {
     return (
         <div className="hcContentContainer hcMarginBottom3">
             <div className="hcRowJustify hcStickOutBox hcRoundedCorners">
