@@ -19,7 +19,7 @@ import {
     IAlignmentDetailPage
 } from "../../misc/interfaces";
 
-export function HcLlLayoutHome(props: IHomePage) {
+export function HcLlLayoutHome(props: {pageData: IHomePage}) {
 
     return (<div className="hcContentContainer hcMarginBottom4 hcMarginTop5">
         <div className="hc2columns">
@@ -40,19 +40,21 @@ export function HcLlLayoutHome(props: IHomePage) {
             {/* right column */}
             <div className="hcBasicSideMargin hcMarginBottom4">
                 <h2>Projects</h2>
-                <div className="hcList hcMarginBottom4">
-                    {props.projectList.map(item => (<HcLlListItemMinimal title={item.prName}/>))}
-                </div>
+                <div>&nbsp;</div>
+                {/*<div className="hcList hcMarginBottom4">
+                    {props.pageData.projectList.map(item => (<HcLlListItemMinimal title={item.prName}/>))}
+                </div>*/}
                 <div className="hcStickOutBox hcRoundedCorners">
                     <p className="hcMarginBottom1">
-                        Or enter your project ID:
+                        Enter your project ID:
                     </p>
-                    <input type="text" name="name" defaultValue="defaultValue" className="hcMarginBottom1"/>
+                    <input type="text" name="name"  className="hcMarginBottom1"/>
                     <button type="button" name="button">
                         Load project
                     </button>
                 </div>
             </div>
+            <div className="errorMsg"/>
         </div>
     </div>);
 }
