@@ -1,44 +1,58 @@
 import {assign, Machine} from "xstate";
+import {IEntityTypeSelection, IJob, ILensSpecs, ILinkSetSpecs} from "../misc/apiInterfaces";
 
-const lenseMachine = Machine<{
-    job: string
+export const lenseMachine = Machine<{
+    jobData: IJob
+
 }, {
     states: {
-        research: {
-            states: {
-                create: {},
-                fetch: {}
-            }
-        },
+        research: {},
+        create: {},
+        fetch: {},
         entity: {}
     }
 }>({
     id: "lenticularLense",
     initial: "research",
     context: {
-        job: ""
+        jobData: {
+            created_at: "",
+            entity_type_selections: [],
+            job_description: "",
+            job_id: "",
+            job_link: "",
+            job_title: "",
+            lens_specs: [],
+            linkset_specs: [],
+            updated_at: ""
+        }
+    },
+    on: {
+        research: "research",
+        entity: "entity",
+        create: "create",
+        fetch: "fetch"
     },
     states: {
         research: {
             on: {
                 NEW: "create",
                 FETCH: "fetch"
-            },
-            states: {
-                create: {
-                    on: {
-                        ENTITY: "entity"
-                    }
-                },
-                fetch: {
-                    on: {
-                        ENTITY: "entity",
-                        FETCH: "fetch"
-                    }
-                }
+            }
+        },
+        create: {
+            on: {
+                ENTITY: "entity",
+                RESEARCH: "research"
+            }
+        },
+        fetch: {
+            on: {
+                ENTITY: "entity",
+                FETCH: "fetch",
+                RESEARCH: "research"
             }
         },
         entity: {}
     }
-
 })

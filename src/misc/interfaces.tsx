@@ -147,6 +147,10 @@ export interface IFilterRows{
     "entities": string[]
 }
 
+export interface ISendEvent {
+    (name: string): void
+}
+
 
 
 

@@ -16,10 +16,18 @@ import {
     IDataSelectionListPage,
     IModalSelectDatasetPage,
     IAlignmentListPage,
-    IAlignmentDetailPage
+    IAlignmentDetailPage,
+    ISendEvent
 } from "../../misc/interfaces";
+import {IJob, IJobBasic} from "../../misc/apiInterfaces";
 
-export function HcLlLayoutHome(props: {pageData: IHomePage}) {
+export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISendEvent }) {
+    let projectID: string = "";
+
+
+    function handleChange(e: React.FormEvent<HTMLInputElement>) {
+        projectID = e.currentTarget.value;
+    }
 
     return (<div className="hcContentContainer hcMarginBottom4 hcMarginTop5">
         <div className="hc2columns">
@@ -32,7 +40,7 @@ export function HcLlLayoutHome(props: {pageData: IHomePage}) {
                 Start a new project to reconcile one or more datasets.
                 <br/>
                 <br/>
-                <button type="button" name="button">
+                <button type="button" name="button" onClick={() => props.parentCallBack("NEW")}>
                     New project
                 </button>
             </div>
@@ -48,7 +56,7 @@ export function HcLlLayoutHome(props: {pageData: IHomePage}) {
                     <p className="hcMarginBottom1">
                         Enter your project ID:
                     </p>
-                    <input type="text" name="name"  className="hcMarginBottom1"/>
+                    <input type="text" name="projectID" onChange={handleChange} className="hcMarginBottom1"/>
                     <button type="button" name="button">
                         Load project
                     </button>
@@ -60,27 +68,52 @@ export function HcLlLayoutHome(props: {pageData: IHomePage}) {
 }
 
 
-export function HcLlLayoutProjectDetail() {
+export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, jobData: IJob }) {
+    let formData: IJobBasic = {
+        job_title: "bonzo",
+        job_description: ""
+    };
+
+    function handleChange(e: React.FormEvent<HTMLInputElement>): void {
+        formData.job_title = e.currentTarget.value;
+    }
+
+    function handleTextChange(e: React.FormEvent<HTMLTextAreaElement>): void {
+        formData.job_description = e.currentTarget.value;
+    }
+
+    function sendData() {
+        if (props.jobData.job_id == "") {
+            console.log("new");
+        } else {
+            console.log("update");
+        }
+        console.log(formData);
+    }
 
     return (<div className="hcContentContainer hcMarginBottom4 hcMarginTop5">
-        <div className="hc2columns">
+        <form className="hc2columns">
 
             {/* left column */}
             <div className="hcMarginBottom2 hcBasicSideMargin hcForm">
                 <h3>Project name</h3>
                 Start a new project to reconcile one or more datasets.
-                <input type="text" name="" value="" className="hcMarginBottom2"/>
+                <input type="text" name="job_title" defaultValue={formData.job_title} onChange={handleChange}
+                       className="hcMarginBottom2"/>
 
                 <h3>Project description</h3>
                 Start a new project to reconcile one or more datasets.
-                <textarea className="hcMarginBottom1"></textarea>
+                <textarea className="hcMarginBottom1" name="job_description" defaultValue={props.jobData.job_description} onChange={handleTextChange}>
 
-                <button type="button">Save project</button>
+                </textarea>
+
+                <button type="button" onClick={() => sendData()}>Save project</button>
+                <button type="button" onClick={() => props.parentCallBack("RESEARCH")}>Back</button>
             </div>
 
             {/* right column */}
             <div className="hcBasicSideMargin hcMarginBottom4"></div>
-        </div>
+        </form>
     </div>);
 
 }
@@ -135,11 +168,11 @@ export function HcLlLayoutDataSelectionOverview(props: { pageData: IDataSelectio
 }
 
 
-export function HcLlDataSelectionDetail(props: {pageData: IModalSelectDatasetPage}) {
+export function HcLlDataSelectionDetail(props: { pageData: IModalSelectDatasetPage }) {
 
     return (<React.Fragment>
-            <HcLlSubNavigation  pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
-                                isDs={props.pageData.pageNavDs}/>
+            <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
+                               isDs={props.pageData.pageNavDs}/>
             <div className="hcContentContainer hcMarginBottom3">
                 <div className="hcRowJustify">
                     <div className="hcBasicSideMargin">
@@ -266,13 +299,13 @@ export function HcLlSelectDataset(props: { pageData: IModalSelectDatasetPage }) 
 {/* Modal select dataset */
 }
 
-export function HcLlLayoutAlignmentOverview(props: {pageData: IAlignmentListPage}) {
+export function HcLlLayoutAlignmentOverview(props: { pageData: IAlignmentListPage }) {
 
     return (
         <React.Fragment>
 
-            <HcLlSubNavigation  pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
-                                isDs={props.pageData.pageNavDs}/>
+            <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
+                               isDs={props.pageData.pageNavDs}/>
 
             <div className="hcContentContainer hcMarginBottom2">
                 <div className="hcRowJustify">
@@ -325,11 +358,11 @@ export function HcLlLayoutAlignmentOverview(props: {pageData: IAlignmentListPage
 }
 
 
-export function HcLlAlignmentDetail(props: {pageData: IAlignmentDetailPage}) {
+export function HcLlAlignmentDetail(props: { pageData: IAlignmentDetailPage }) {
 
     return (<React.Fragment>
-            <HcLlSubNavigation  pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
-                                isDs={props.pageData.pageNavDs}/>
+            <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
+                               isDs={props.pageData.pageNavDs}/>
             <div className="hcContentContainer hcMarginBottom3">
                 <div className="hcRowJustify">
                     <div className="hcBasicSideMargin">
