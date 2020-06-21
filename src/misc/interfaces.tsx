@@ -151,6 +151,15 @@ export interface ISendEvent {
     (name: string): void
 }
 
+export interface ISetID {
+    type: "SET_ID",
+    id: string
+}
+
+export interface ISetIDEvent {
+    (struc: ISetID): void
+}
+
 
 
 

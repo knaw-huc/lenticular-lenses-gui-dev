@@ -1,9 +1,10 @@
 import {assign, Machine} from "xstate";
 import {IEntityTypeSelection, IJob, ILensSpecs, ILinkSetSpecs} from "../misc/apiInterfaces";
+import {ISetIDEvent} from "../misc/interfaces";
 
 export const lenseMachine = Machine<{
-    jobData: IJob
-
+    jobData:IJob,
+    jobID:string
 }, {
     states: {
         research: {},
@@ -25,7 +26,8 @@ export const lenseMachine = Machine<{
             lens_specs: [],
             linkset_specs: [],
             updated_at: ""
-        }
+        },
+        jobID: ""
     },
     on: {
         research: "research",
@@ -43,7 +45,10 @@ export const lenseMachine = Machine<{
         create: {
             on: {
                 ENTITY: "entity",
-                RESEARCH: "research"
+                RESEARCH: "research",
+                SET_ID: {
+                    actions: assign({jobID: (context, event: ISetIDEvent) => event.struc.id })
+                }
             }
         },
         fetch: {

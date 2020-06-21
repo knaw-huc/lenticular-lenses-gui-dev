@@ -10,6 +10,7 @@ import {
     HcLlListItemAlignmentClusters,
 } from './ListItems';
 import {HcLlSubNavigation} from './Utils';
+import {useState} from "react";
 import {HclLIconDataSelection, HclLIconAlignment} from './GoldenAgents';
 import {
     IHomePage,
@@ -17,16 +18,39 @@ import {
     IModalSelectDatasetPage,
     IAlignmentListPage,
     IAlignmentDetailPage,
-    ISendEvent
+    ISendEvent, ISetIDEvent
 } from "../../misc/interfaces";
 import {IJob, IJobBasic} from "../../misc/apiInterfaces";
+import {API_LOCATION} from "../../misc/config";
 
-export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISendEvent }) {
+export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISendEvent, setID:ISetIDEvent, jobID: string }) {
     let projectID: string = "";
+    const [error, setError] = useState("");
 
 
     function handleChange(e: React.FormEvent<HTMLInputElement>) {
         projectID = e.currentTarget.value;
+    }
+
+    function submit() {
+        if (projectID === "") {
+            setError("No project ID given!");
+        } else {
+            getProject();
+        }
+    }
+
+    async function getProject() {
+        const url = API_LOCATION + "job/" + projectID;
+
+        const response = await fetch(url);
+        const json = await response.json();
+
+        if (!response.ok) {
+            setError("Job with this ID not found!")
+        } else {
+            console.log(json);
+        }
     }
 
     return (<div className="hcContentContainer hcMarginBottom4 hcMarginTop5">
@@ -57,21 +81,21 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
                         Enter your project ID:
                     </p>
                     <input type="text" name="projectID" onChange={handleChange} className="hcMarginBottom1"/>
-                    <button type="button" name="button">
+                    <button type="button" name="button" onClick={submit}>
                         Load project
                     </button>
                 </div>
             </div>
-            <div className="errorMsg"/>
+            <div className="errorMsg">{error}</div>
         </div>
     </div>);
 }
 
 
-export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, jobData: IJob }) {
+export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, setID: ISetIDEvent, jobData: IJob }) {
     let formData: IJobBasic = {
-        job_title: "bonzo",
-        job_description: ""
+        job_title: props.jobData.job_title,
+        job_description: props.jobData.job_description
     };
 
     function handleChange(e: React.FormEvent<HTMLInputElement>): void {
