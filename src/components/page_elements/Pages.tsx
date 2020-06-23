@@ -18,13 +18,13 @@ import {
     IModalSelectDatasetPage,
     IAlignmentListPage,
     IAlignmentDetailPage,
-    ISendEvent, ISetIDEvent
+    ISendEvent, ISetValueEvent, ISetValue, ISetJobEvent
 } from "../../misc/interfaces";
-import {IJob, IJobBasic} from "../../misc/apiInterfaces";
+import {IEntityTypeSelection, IJob, IJobBasic, ILensSpecs, ILinkSetSpecs, IUpdateJob} from "../../misc/apiInterfaces";
 import {API_LOCATION} from "../../misc/config";
 
-export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISendEvent, setID:ISetIDEvent, jobID: string }) {
-    let projectID: string = "";
+export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISendEvent, setValue: ISetValueEvent, setJob: ISetJobEvent, jobID: string, qsJobID: string }) {
+    let projectID: string = props.qsJobID;
     const [error, setError] = useState("");
 
 
@@ -42,14 +42,14 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
 
     async function getProject() {
         const url = API_LOCATION + "job/" + projectID;
-
-        const response = await fetch(url);
-        const json = await response.json();
-
-        if (!response.ok) {
-            setError("Job with this ID not found!")
-        } else {
-            console.log(json);
+        try {
+            const response = await fetch(url);
+            const json: IJob = await response.json();
+            const struc: ISetValue = {type: "SET_ID", value: json.job_id};
+            props.setValue(struc);
+            props.parentCallBack("FETCH");
+        } catch (err) {
+            setError("Job not found! Try again with a correct job ID.");
         }
     }
 
@@ -80,7 +80,7 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
                     <p className="hcMarginBottom1">
                         Enter your project ID:
                     </p>
-                    <input type="text" name="projectID" onChange={handleChange} className="hcMarginBottom1"/>
+                    <input type="text" name="projectID" onChange={handleChange} className="hcMarginBottom1" defaultValue={props.qsJobID}/>
                     <button type="button" name="button" onClick={submit}>
                         Load project
                     </button>
@@ -92,14 +92,30 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
 }
 
 
-export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, setID: ISetIDEvent, jobData: IJob }) {
+export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, setValue: ISetValueEvent, setJob: ISetJobEvent, jobID: string, jobData: IJob }) {
     let formData: IJobBasic = {
         job_title: props.jobData.job_title,
-        job_description: props.jobData.job_description
+        job_description: props.jobData.job_description,
+        job_link: props.jobData.job_link
     };
 
+    let nw: boolean = false;
+
+    if (props.jobID === "") {
+        nw = true;
+    }
+
+    const [newJob, setNewJob] = useState<boolean>(nw);
+
     function handleChange(e: React.FormEvent<HTMLInputElement>): void {
-        formData.job_title = e.currentTarget.value;
+        switch (e.currentTarget.name) {
+            case "job_title":
+                formData.job_title = e.currentTarget.value;
+                break;
+            case "job_link":
+                formData.job_link = e.currentTarget.value;
+                break;
+        }
     }
 
     function handleTextChange(e: React.FormEvent<HTMLTextAreaElement>): void {
@@ -107,13 +123,64 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
     }
 
     function sendData() {
-        if (props.jobData.job_id == "") {
-            console.log("new");
+        if (newJob) {
+            sendNew();
         } else {
-            console.log("update");
+            sendUpdate();
         }
-        console.log(formData);
     }
+
+    async function sendNew() {
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(formData)
+        };
+        const response = await fetch("/job/create", requestOptions);
+        const data = await response.json();
+        console.log(data);
+        if (data.result === "created") {
+            props.setValue({type: "SET_ID", value: data.job_id});
+        }
+        //props.parentCallBack("FETCH");
+    }
+
+    async function sendUpdate() {
+        let updateValues: IUpdateJob = {
+            job_id: props.jobData.job_id,
+            job_title: formData.job_title,
+            job_description: formData.job_description,
+            job_link: formData.job_link,
+            entity_type_selections: [],
+            lens_specs: [],
+            linkset_specs: []
+        }
+
+        if (props.jobData.entity_type_selections !== null) {
+            updateValues.entity_type_selections = props.jobData.entity_type_selections;
+        }
+
+        if (props.jobData.lens_specs !== null) {
+            updateValues.lens_specs = props.jobData.lens_specs;
+        }
+
+        if (props.jobData.linkset_specs !== null) {
+            updateValues.linkset_specs = props.jobData.linkset_specs;
+        }
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(updateValues)
+        };
+        const response = await fetch("/job/update", requestOptions);
+        const data = await response.json();
+        if (data.result !== undefined && data.result === "updated") {
+            props.setValue({type: "SET_ID", value: data.job_id});
+        }
+
+    }
+
 
     return (<div className="hcContentContainer hcMarginBottom4 hcMarginTop5">
         <form className="hc2columns">
@@ -121,18 +188,23 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
             {/* left column */}
             <div className="hcMarginBottom2 hcBasicSideMargin hcForm">
                 <h3>Project name</h3>
-                Start a new project to reconcile one or more datasets.
                 <input type="text" name="job_title" defaultValue={formData.job_title} onChange={handleChange}
                        className="hcMarginBottom2"/>
 
                 <h3>Project description</h3>
-                Start a new project to reconcile one or more datasets.
-                <textarea className="hcMarginBottom1" name="job_description" defaultValue={props.jobData.job_description} onChange={handleTextChange}>
+                <textarea className="hcMarginBottom1" name="job_description"
+                          defaultValue={formData.job_description} onChange={handleTextChange}>
 
                 </textarea>
 
+                <h3>Project link</h3>
+                <input type="text" name="job_link" defaultValue={formData.job_link} onChange={handleChange}
+                       className="hcMarginBottom2"/>
                 <button type="button" onClick={() => sendData()}>Save project</button>
                 <button type="button" onClick={() => props.parentCallBack("RESEARCH")}>Back</button>
+                {!newJob ? (
+                    <button type="button" onClick={() => props.parentCallBack("ENTITY")}>Next</button>
+                ) : (<div/>)}
             </div>
 
             {/* right column */}

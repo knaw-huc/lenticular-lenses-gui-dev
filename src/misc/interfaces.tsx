@@ -1,3 +1,5 @@
+import {IJob} from "./apiInterfaces";
+
 export interface IHeaderData {
     "toolName": string,
     "projectName": string
@@ -151,13 +153,22 @@ export interface ISendEvent {
     (name: string): void
 }
 
-export interface ISetID {
-    type: "SET_ID",
-    id: string
+export interface ISetValue {
+    type: string,
+    value: string
 }
 
-export interface ISetIDEvent {
-    (struc: ISetID): void
+export interface ISetValueEvent {
+    (struc: ISetValue): void
+}
+
+export interface ISetJob {
+    type: "SET_JOB",
+    value: IJob
+}
+
+export interface ISetJobEvent {
+    (struc: ISetJob): void
 }
 
 

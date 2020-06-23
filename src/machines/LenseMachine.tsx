@@ -1,10 +1,10 @@
 import {assign, Machine} from "xstate";
 import {IEntityTypeSelection, IJob, ILensSpecs, ILinkSetSpecs} from "../misc/apiInterfaces";
-import {ISetIDEvent} from "../misc/interfaces";
+import {ISetJob, ISetValue, ISetValueEvent} from "../misc/interfaces";
 
 export const lenseMachine = Machine<{
-    jobData:IJob,
-    jobID:string
+    jobData: IJob,
+    jobID: string
 }, {
     states: {
         research: {},
@@ -39,7 +39,13 @@ export const lenseMachine = Machine<{
         research: {
             on: {
                 NEW: "create",
-                FETCH: "fetch"
+                FETCH: "fetch",
+                SET_ID: {
+                    actions: assign({jobID: (context, event: ISetValue) => event.value})
+                },
+                SET_JOB: {
+                    actions: assign({jobData: (context, event: ISetJob) => event.value})
+                }
             }
         },
         create: {
@@ -47,7 +53,11 @@ export const lenseMachine = Machine<{
                 ENTITY: "entity",
                 RESEARCH: "research",
                 SET_ID: {
-                    actions: assign({jobID: (context, event: ISetIDEvent) => event.struc.id })
+                    actions: assign({jobID: (context, event: ISetValue) => event.value}),
+                    target: "fetch"
+                },
+                SET_JOB: {
+                    actions: assign({jobData: (context, event: ISetJob) => event.value})
                 }
             }
         },
@@ -55,7 +65,14 @@ export const lenseMachine = Machine<{
             on: {
                 ENTITY: "entity",
                 FETCH: "fetch",
-                RESEARCH: "research"
+                RESEARCH: "research",
+                SET_ID: {
+                    actions: assign({jobID: (context, event: ISetValue) => event.value}),
+                    target: "fetch"
+                },
+                SET_JOB: {
+                    actions: assign({jobData: (context, event: ISetJob) => event.value})
+                }
             }
         },
         entity: {}

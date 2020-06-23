@@ -8,9 +8,11 @@ import ResearchPick from "./components/pages/ResearchPick";
 import {StateMachineComponent} from './renderMachine';
 import {lenseMachine} from "./machines/LenseMachine";
 import {NewProject} from "./components/pages/newProject";
+import {EditProjectBasics} from "./components/pages/editProjectBasics";
 import {interpret} from "xstate";
-import {ISendEvent, ISetID, ISetIDEvent} from "./misc/interfaces";
+import {ISendEvent, ISetJob, ISetJobEvent, ISetValue, ISetValueEvent} from "./misc/interfaces";
 import * as serviceWorker from './serviceWorker';
+import {EntitySelection} from "./components/pages/EntitySelection";
 
 
 const interpreter = interpret(lenseMachine);
@@ -20,18 +22,25 @@ const switchState: ISendEvent = (name: string) => {
     interpreter.send(name);
 }
 
-const setContextID: ISetIDEvent = (struc:ISetID) => {
+const setContextValue: ISetValueEvent = (struc:ISetValue) => {
     interpreter.send(struc);
 }
 
+const setContextJob: ISetJobEvent = (struc:ISetJob) => {
+    interpreter.send(struc);
+}
+
+const qs: URLSearchParams = new URLSearchParams(window.location.search);
+const qsJobID: string | null = qs.get("job_id");
 
 ReactDOM.render(
     <div>
         {StateMachineComponent(interpreter,
             {
-                "research": ({state}) => <ResearchPick parentCallBack={switchState} setID={setContextID} jobID={state.context.jobID}/>,
-                "create": ({state}) => <NewProject  parentCallBack={switchState} setID={setContextID} jobData={state.context.jobData}/>,
-                "fetch": ({state}) => <div/>,
+                "research": ({state}) => <ResearchPick parentCallBack={switchState} setValue={setContextValue} setJob={setContextJob} jobID={state.context.jobID} jobData={state.context.jobData} qsJobID={qsJobID}/>,
+                "create": ({state}) => <NewProject  parentCallBack={switchState} setValue={setContextValue} setJob={setContextJob} jobID={state.context.jobID} jobData={state.context.jobData}/>,
+                "fetch": ({state}) => <EditProjectBasics parentCallBack={switchState} setValue={setContextValue} setJob={setContextJob} jobID={state.context.jobID} jobData={state.context.jobData}/>,
+                "entity": ({state}) => <EntitySelection jobData={state.context.jobData} />,
                 "": ({state}) => <div>The GUI for {state.value} is not yet defined</div>
             })}
     </div>,
