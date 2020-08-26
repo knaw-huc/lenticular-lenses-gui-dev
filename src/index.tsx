@@ -13,6 +13,7 @@ import {interpret} from "xstate";
 import {ISendEvent, ISetJob, ISetJobEvent, ISetValue, ISetValueEvent} from "./misc/interfaces";
 import * as serviceWorker from './serviceWorker';
 import {EntitySelection} from "./components/pages/EntitySelection";
+import {PickDataSets} from "./components/pages/PickDataSets";
 
 
 const interpreter = interpret(lenseMachine);
@@ -40,7 +41,8 @@ ReactDOM.render(
                 "research": ({state}) => <ResearchPick parentCallBack={switchState} setValue={setContextValue} setJob={setContextJob} jobID={state.context.jobID} jobData={state.context.jobData} qsJobID={qsJobID}/>,
                 "create": ({state}) => <NewProject  parentCallBack={switchState} setValue={setContextValue} setJob={setContextJob} jobID={state.context.jobID} jobData={state.context.jobData}/>,
                 "fetch": ({state}) => <EditProjectBasics parentCallBack={switchState} setValue={setContextValue} setJob={setContextJob} jobID={state.context.jobID} jobData={state.context.jobData}/>,
-                "entity": ({state}) => <EntitySelection jobData={state.context.jobData} />,
+                "entity": ({state}) => <EntitySelection parentCallBack={switchState} jobData={state.context.jobData} />,
+                "datasets" : ({state}) => <PickDataSets parentCallBack={switchState} jobData={state.context.jobData} />,
                 "": ({state}) => <div>The GUI for {state.value} is not yet defined</div>
             })}
     </div>,

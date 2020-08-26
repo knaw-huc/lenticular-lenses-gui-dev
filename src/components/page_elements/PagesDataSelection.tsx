@@ -11,7 +11,12 @@ import {
 } from './ListItems';
 import {HcLlSubNavigation} from './Utils';
 import {HclLIconDataSelection, HclLIconAlignment} from './GoldenAgents';
-import {IDataSelectionDetailPage, IDataSelectionListPage, IModalSelectDatasetPage} from "../../misc/interfaces";
+import {
+    IDataSelectionDetailPage,
+    IDataSelectionListPage,
+    IModalSelectDatasetPage,
+    ISetIndex
+} from "../../misc/interfaces";
 
 
 export function HcLlLayoutDataSelectionOverview(props: {pageData: IDataSelectionListPage}) {
@@ -148,14 +153,14 @@ export function HcLlDataSelectionDetail(props: {pageData: IDataSelectionDetailPa
 {/* Modal select dataset */
 }
 
-export function HcLlSelectDataset(props: {pageData: IModalSelectDatasetPage}) {
+export function HcLlSelectDataset(props: {pageData: IModalSelectDatasetPage, parentCallback: ISetIndex}) {
 
     return (
         <React.Fragment>
             <div className=" hc2columns">
                 <div className="hcList hcMarginBottom4 hcBasicSideMargin hcMaxhalf">
                     {props.pageData.datasetList.map(item => (
-                        <HcLlListItemMinimal2Fields fields={item}/>))}
+                        <HcLlListItemMinimal2Fields fields={item} setIndex={props.pageData.setIndex} parentCallback= {props.parentCallback} />))}
 
                 </div>
                 <div className="hcBasicSideMargin hcClrBg_Grey05 hcleftMark">

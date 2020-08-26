@@ -37,7 +37,8 @@ export interface IModalSelectDatasetPage {
     "detailInfoName": string,
     "detailInfoProvider": string,
     "detailInfodescription": string,
-    "detailInfoEntities": ISingleList[]
+    "detailInfoEntities": ISingleList[],
+    "setIndex": string
 }
 
 export interface ISingleList {
@@ -46,8 +47,11 @@ export interface ISingleList {
 
 export interface IDoubleList {
     "field1": string,
-    "field2": string
+    "field2": string,
+    "key": string
 }
+
+
 
 export interface IAlignmentListPage {
     "pageTitle": string,
@@ -170,6 +174,41 @@ export interface ISetJob {
 export interface ISetJobEvent {
     (struc: ISetJob): void
 }
+
+export interface IProperty {
+    density: number,
+    isInverse: boolean,
+    isLink: boolean,
+    isList: boolean,
+    isValueType: boolean,
+    name: string,
+    referencedCollections: string[],
+    shortenedUri: string
+}
+
+export interface ICollection {
+    downloaded: boolean,
+    properties: IProperty[],
+    title: string,
+    total: number
+}
+
+export interface IDataSet {
+    collections: ICollection[],
+    description: string,
+    name: string,
+    published: boolean,
+    title: string;
+}
+
+export interface IDataSets {
+    [index: string] : IDataSet
+}
+
+export interface ISetIndex {
+    (index: string):void
+}
+
 
 
 

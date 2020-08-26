@@ -18,7 +18,7 @@ import {
     IModalSelectDatasetPage,
     IAlignmentListPage,
     IAlignmentDetailPage,
-    ISendEvent, ISetValueEvent, ISetValue, ISetJobEvent
+    ISendEvent, ISetValueEvent, ISetValue, ISetJobEvent, ISetIndex
 } from "../../misc/interfaces";
 import {IEntityTypeSelection, IJob, IJobBasic, ILensSpecs, ILinkSetSpecs, IUpdateJob} from "../../misc/apiInterfaces";
 import {API_LOCATION} from "../../misc/config";
@@ -173,7 +173,8 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updateValues)
         };
-        const response = await fetch("/job/update", requestOptions);
+        const response = await fetch("job/update", requestOptions);
+        console.log(response);
         const data = await response.json();
         if (data.result !== undefined && data.result === "updated") {
             props.setValue({type: "SET_ID", value: data.job_id});
@@ -215,7 +216,7 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
 }
 
 
-export function HcLlLayoutDataSelectionOverview(props: { pageData: IDataSelectionListPage }) {
+export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEvent, pageData: IDataSelectionListPage }) {
 
     return (<React.Fragment>
         <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
@@ -228,7 +229,7 @@ export function HcLlLayoutDataSelectionOverview(props: { pageData: IDataSelectio
                     <br/>They can be entities with filters on them.
                 </div>
                 <div className="hcBasicSideMargin">
-                    <button type="button" name="button">
+                    <button type="button" name="button" onClick={() => props.parentCallBack("DATASETS")}>
                         New data selection
                     </button>
                 </div>
@@ -357,14 +358,14 @@ export function HcLlDataSelectionDetail(props: { pageData: IModalSelectDatasetPa
 {/* Modal select dataset */
 }
 
-export function HcLlSelectDataset(props: { pageData: IModalSelectDatasetPage }) {
+export function HcLlSelectDataset(props: { pageData: IModalSelectDatasetPage, parentCallback: ISetIndex }) {
 
     return (
         <React.Fragment>
             <div className=" hc2columns">
                 <div className="hcList hcMarginBottom4 hcBasicSideMargin hcMaxhalf">
                     {props.pageData.datasetList.map(item => (
-                        <HcLlListItemMinimal2Fields fields={item}/>))}
+                        <HcLlListItemMinimal2Fields fields={item} setIndex={props.pageData.setIndex} parentCallback={props.parentCallback}/>))}
 
                 </div>
                 <div className="hcBasicSideMargin hcClrBg_Grey05 hcleftMark">

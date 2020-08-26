@@ -5,7 +5,7 @@ import {
     IAlignmentList, IClusterList,
     IDoubleList,
     IDsList,
-    ILinkList,
+    ILinkList, ISetIndex,
     ITripleList
 } from "../../misc/interfaces";
 
@@ -22,10 +22,19 @@ export function HcLlListItemMinimal(props: { title: string }) {
 }
 
 
-export function HcLlListItemMinimal2Fields(props: {fields: IDoubleList} ) {
+export function HcLlListItemMinimal2Fields(props: { fields: IDoubleList, setIndex: string,  parentCallback: ISetIndex }) {
+    const active: boolean = props.fields.key == props.setIndex;
+    let klasse: string = "";
+    if (active) {
+        klasse = "hcAlignVerticalActive hcIsLink";
+    } else {
+        klasse = "hcAlignVertical hcIsLink";
+    }
+
+
 
     return (
-        <div className="hcAlignVertical">
+        <div className={klasse} onClick={() => props.parentCallback(props.fields.key)}>
             <div>
                 {props.fields.field1}
                 <div className="hcSmallTxt hcClrTxt_Grey">
@@ -105,7 +114,7 @@ export function HcLlListItemAlignment(props: IAlignmentList) {
 }
 
 
-export function HcLlListItemAlignmentLinks(props: {links: ILinkList}) {
+export function HcLlListItemAlignmentLinks(props: { links: ILinkList }) {
 
     return (
         <div className="hcListBasicResult">
@@ -131,7 +140,7 @@ export function HcLlListItemAlignmentLinks(props: {links: ILinkList}) {
 }
 
 
-export function HcLlListItemAlignmentClusters(props: {cluster: IClusterList}) {
+export function HcLlListItemAlignmentClusters(props: { cluster: IClusterList }) {
 
     return (
         <div className="hcListBasicResult">
@@ -172,14 +181,14 @@ export function HcResultListPaging() {
 
     return (
         <div className="hcPagination">
-            <div><a href="#">← Previous</a></div>
+            {/*<div><a href="#">← Previous</a></div>
             <div><a href="#">1</a></div>
             <div className="bgColorBrand2"><a href="#">2</a></div>
             <div><a href="#">3</a></div>
             <div><a href="#">4</a></div>
             <div><a href="#">5</a></div>
             <div><a href="#">6</a></div>
-            <div><a href="#">Next →</a></div>
+            <div><a href="#">Next →</a></div>*/}
         </div>
     );
 }

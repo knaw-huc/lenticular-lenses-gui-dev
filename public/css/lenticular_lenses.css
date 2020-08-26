@@ -261,9 +261,14 @@ strong {
     display: flex;
     flex-direction: row; }
 
-.hcAlignVertical {
+.hcAlignVertical, .hcAlignVerticalActive {
     display: flex;
     flex-direction: column; }
+
+.hcAlignVerticalActive {
+    font-weight: bold;
+}
+
 
 .hcAlignLeft {
     display: flex;
@@ -357,7 +362,7 @@ strong {
     background-color: #d9d9d9; }
 
 .hcListDisctinctLines > *:nth-child(even) {
-    background-color: none; }
+    background-color: inherit; }
 
 .hcList > * > * {
     flex: 1;
@@ -637,7 +642,7 @@ input, select, option, textarea {
         align-items: baseline;
         padding-right: 1rem; }
     select {
-        background-color: none; } }
+        background-color: inherit; } }
 
 .hcBorderBottom {
     border-bottom: 1px solid #ededed; }
@@ -817,7 +822,7 @@ hr {
         width: calc(100% - 350px); }
     .hcLayoutFacetsToggel {
         display: block;
-        overflow-x: none;
+        overflow-x: inherit;
         height: auto;
         flex-direction: column;
         background: none; }

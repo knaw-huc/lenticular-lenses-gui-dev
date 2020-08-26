@@ -10,7 +10,8 @@ export const lenseMachine = Machine<{
         research: {},
         create: {},
         fetch: {},
-        entity: {}
+        entity: {},
+        datasets: {}
     }
 }>({
     id: "lenticularLense",
@@ -75,6 +76,15 @@ export const lenseMachine = Machine<{
                 }
             }
         },
-        entity: {}
+        entity: {
+            on: {
+                DATASETS: "datasets"
+            }
+        },
+        datasets: {
+            on: {
+                ENTITY: "entity"
+            }
+        }
     }
 })

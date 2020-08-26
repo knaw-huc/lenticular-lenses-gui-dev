@@ -1,4 +1,5 @@
 import React from 'react';
+import {ISendEvent} from "../../misc/interfaces";
 
 export function HcLlSubNavigation(props: { pageTitle: string, isDs: boolean, isAl: boolean }) {
     return (
@@ -17,7 +18,7 @@ export function HcLlSubNavigation(props: { pageTitle: string, isDs: boolean, isA
 }
 
 
-export function HcModal(props: { modalName: string, children: object }) {
+export function HcModal(props: { parentCallBack: ISendEvent, modalName: string, children: object }) {
     return (
         <div className="hcModal">
             <div className="hcContentContainer">
@@ -25,7 +26,7 @@ export function HcModal(props: { modalName: string, children: object }) {
 
                     <div className="hcBasicSideMargin hc2columns hcMarginBottom2 hcMarginTop2">
                         <h3>{props.modalName}</h3>
-                        <div className="hcTxtRight">Close</div>
+                        <div className="hcTxtRight hcIsLink" onClick={() => props.parentCallBack("ENTITY")}>Close</div>
                     </div>
                     {props.children}
                 </div>
