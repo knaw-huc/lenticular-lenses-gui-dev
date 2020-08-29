@@ -95,7 +95,7 @@ export function PickDataSets(props: { parentCallBack: ISendEvent, jobData: IJob 
         <div className="App">
             <HcHeaderGoldenAgents toolName='Lenticular Lenses'
                                   projectName={props.jobData.job_title}/>
-            {!loading ? (<HcModal parentCallBack={props.parentCallBack} modalName='Dataset browser'>
+            {!loading ? (<HcModal parentCallBack={props.parentCallBack} modalName='Select dataset'>
                     <HcLlSelectDataset pageData={pageData} parentCallback={setIndex}/>
                 </HcModal>) :
                 (<div className="loadClass">Loading...</div>)}

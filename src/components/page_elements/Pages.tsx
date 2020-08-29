@@ -21,7 +21,7 @@ import {
     ISendEvent, ISetValueEvent, ISetValue, ISetJobEvent, ISetIndex
 } from "../../misc/interfaces";
 import {IEntityTypeSelection, IJob, IJobBasic, ILensSpecs, ILinkSetSpecs, IUpdateJob} from "../../misc/apiInterfaces";
-import {API_LOCATION} from "../../misc/config";
+import {API_LOCATION, AUTH_SERVER} from "../../misc/config";
 
 export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISendEvent, setValue: ISetValueEvent, setJob: ISetJobEvent, jobID: string, qsJobID: string }) {
     let projectID: string = props.qsJobID;
@@ -38,6 +38,16 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
         } else {
             getProject();
         }
+    }
+
+    function doLogin() {
+        const form = document.createElement('form');
+        form.action = AUTH_SERVER;
+        form.method = 'POST';
+        form.innerHTML = `<input name="hsurl" value=${window.location} type="hidden" />`;
+        form.style.display = 'none';
+        document.body.appendChild(form);
+        form.submit();
     }
 
     async function getProject() {
@@ -67,6 +77,13 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
                 <button type="button" name="button" onClick={() => props.parentCallBack("NEW")}>
                     New project
                 </button>
+                <div className="hcLoginArea">
+                    <h2>Login</h2>
+                    Login to get access to private datasets.
+                    <button type="button" name="loginButton" className="loginBtn" onClick={() => {doLogin()}}>
+                        Login
+                    </button>
+                </div>
             </div>
 
             {/* right column */}

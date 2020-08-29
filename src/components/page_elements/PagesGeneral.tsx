@@ -20,6 +20,11 @@ export function HcLlLayoutHome(props: {pageData: IHomePage}) {
                     <button type="button" name="button">
                         New project
                     </button>
+                    <div className="hcLoginArea">
+                        <button type="button" name="loginButton">
+                            Login
+                        </button>
+                    </div>
                 </div>
 
                 {/* right column */}
