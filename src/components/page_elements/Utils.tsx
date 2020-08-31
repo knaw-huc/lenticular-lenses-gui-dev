@@ -26,7 +26,6 @@ export function HcModal(props: { parentCallBack: ISendEvent, modalName: string, 
 
                     <div className="hcBasicSideMargin hc2columns hcMarginBottom2 hcMarginTop2">
                         <h3>{props.modalName}</h3>
-                        <div className="hcTxtRight hcIsLink" onClick={() => props.parentCallBack("ENTITY")}>Select</div>
                         <div className="hcTxtRight hcIsLink" onClick={() => props.parentCallBack("ENTITY")}>Close</div>
                     </div>
                     {props.children}

@@ -167,11 +167,10 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
             job_id: props.jobData.job_id,
             job_title: formData.job_title,
             job_description: formData.job_description,
-            job_link: formData.job_link,
-            entity_type_selections: [],
-            lens_specs: [],
-            linkset_specs: []
+            job_link: formData.job_link
         }
+
+
 
         if (props.jobData.entity_type_selections !== null) {
             updateValues.entity_type_selections = props.jobData.entity_type_selections;
@@ -400,7 +399,7 @@ export function HcLlSelectDataset(props: { pageData: IModalSelectDatasetPage, pa
                     <div className="hcLabel">Entity</div>
                     <div className="hcList ">
                         {props.pageData.detailInfoEntities.map(item => (
-                            <HcLlListItemMinimal title={item.field}/>))}
+                            <HcLlListItemMinimal title={item.field} />))}
                     </div>
                 </div>
             </div>

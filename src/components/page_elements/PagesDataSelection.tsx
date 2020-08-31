@@ -3,6 +3,7 @@ import {
     HcLlListItemMinimal,
     HcLlListItemMinimal2Fields,
     HcLlListLabel,
+    HcLlSelectEntityFromList,
     HcLlListItemDataSelection,
     HcLlListItemAlignment,
     HcResultListPaging,
@@ -178,7 +179,7 @@ export function HcLlSelectDataset(props: {pageData: IModalSelectDatasetPage, par
                     <div className="hcLabel">Entity</div>
                     <div className="hcList ">
                         {props.pageData.detailInfoEntities.map(item => (
-                            <HcLlListItemMinimal title={item.field}/>))}
+                            <HcLlSelectEntityFromList title={item.field} setIndex={props.pageData.setIndex}/>))}
                     </div>
                 </div>
             </div>

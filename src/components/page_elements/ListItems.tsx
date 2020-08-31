@@ -10,10 +10,24 @@ import {
 } from "../../misc/interfaces";
 
 
-export function HcLlListItemMinimal(props: { title: string }) {
+export function HcLlListItemMinimal(props: { title: string}) {
 
     return (
-        <div>
+        <div className="hcEntityName">
+            {props.title}
+        </div>
+
+
+    );
+}
+
+export function HcLlSelectEntityFromList(props: { title: string, setIndex: string}) {
+
+
+    return (
+        <div className="hcEntityName" onClick={() => {
+
+        }}>
             {props.title}
         </div>
 

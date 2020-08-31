@@ -4,7 +4,7 @@ import {ISetJob, ISetValue, ISetValueEvent} from "../misc/interfaces";
 
 export const lenseMachine = Machine<{
     jobData: IJob,
-    jobID: string
+    jobID: string,
 }, {
     states: {
         research: {},
@@ -34,7 +34,8 @@ export const lenseMachine = Machine<{
         research: "research",
         entity: "entity",
         create: "create",
-        fetch: "fetch"
+        fetch: "fetch",
+        datasets: "datasets"
     },
     states: {
         research: {
@@ -83,7 +84,10 @@ export const lenseMachine = Machine<{
         },
         datasets: {
             on: {
-                ENTITY: "entity"
+                ENTITY: "entity",
+                SET_JOB: {
+                    actions: assign({jobData: (context, event: ISetJob) => event.value})
+                }
             }
         }
     }
