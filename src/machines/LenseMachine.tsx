@@ -1,5 +1,5 @@
 import {assign, Machine} from "xstate";
-import {IEntityTypeSelection, IJob, ILensSpecs, ILinkSetSpecs} from "../misc/apiInterfaces";
+import { IJob, ILensSpecs, ILinkSetSpecs} from "../misc/apiInterfaces";
 import {ISetJob, ISetValue, ISetValueEvent} from "../misc/interfaces";
 
 export const lenseMachine = Machine<{
@@ -79,7 +79,10 @@ export const lenseMachine = Machine<{
         },
         entity: {
             on: {
-                DATASETS: "datasets"
+                DATASETS: "datasets",
+                SET_JOB: {
+                    actions: assign({jobData: (context, event: ISetJob) => event.value})
+                }
             }
         },
         datasets: {

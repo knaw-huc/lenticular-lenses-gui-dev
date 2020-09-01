@@ -20,7 +20,7 @@ import {
     IAlignmentDetailPage,
     ISendEvent, ISetValueEvent, ISetValue, ISetJobEvent, ISetIndex
 } from "../../misc/interfaces";
-import {IEntityTypeSelection, IJob, IJobBasic, ILensSpecs, ILinkSetSpecs, IUpdateJob} from "../../misc/apiInterfaces";
+import { IJob, IJobBasic, ILensSpecs, ILinkSetSpecs, IUpdateJob} from "../../misc/apiInterfaces";
 import {API_LOCATION, AUTH_SERVER} from "../../misc/config";
 
 export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISendEvent, setValue: ISetValueEvent, setJob: ISetJobEvent, jobID: string, qsJobID: string }) {

@@ -5,12 +5,15 @@ import {
     IAlignmentList, IClusterList,
     IDoubleList,
     IDsList,
-    ILinkList, ISetIndex,
+    ILinkList, ISendEvent, ISetIndex, ISetJob, ISetJobEvent,
     ITripleList
 } from "../../misc/interfaces";
+import {IJob, IJobDataSet, ILensSpecs, ILinkSetSpecs} from "../../misc/apiInterfaces";
+import {defaultIJobDataSet} from "../../misc/functions";
+import {API_LOCATION} from "../../misc/config";
 
 
-export function HcLlListItemMinimal(props: { title: string}) {
+export function HcLlListItemMinimal(props: { title: string }) {
 
     return (
         <div className="hcEntityName">
@@ -21,12 +24,48 @@ export function HcLlListItemMinimal(props: { title: string}) {
     );
 }
 
-export function HcLlSelectEntityFromList(props: { title: string, setIndex: string}) {
+export function HcLlSelectEntityFromList(props: { title: string, setIndex: string, jobData: IJob, switchState: ISendEvent, setJob: ISetJobEvent }) {
+    let formData: IJob = {
+        entity_type_selections: props.jobData.entity_type_selections,
+        job_description: props.jobData.job_description,
+        job_id: props.jobData.job_id,
+        job_link: props.jobData.job_link,
+        job_title: props.jobData.job_title,
+        lens_specs: props.jobData.lens_specs,
+        linkset_specs: props.jobData.linkset_specs
+    }
 
+    async function sendJob(data: IJob) {
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(formData)
+        };
+        const response = await fetch("/job/update", requestOptions);
+        const json: any = await response.json();
+
+        if (json.result === "updated") {
+            const sj: ISetJob = {
+                type: "SET_JOB",
+                value: formData
+            }
+            props.setJob(sj);
+            props.switchState("ENTITY");
+            console.log(json);
+        } else {
+            console.log(json);
+        }
+    }
 
     return (
         <div className="hcEntityName" onClick={() => {
+            const dataSet: IJobDataSet = defaultIJobDataSet();
+            dataSet.id = formData.entity_type_selections.length;
+            dataSet.dataset.dataset_id = props.setIndex;
+            dataSet.dataset.collection_id = props.title;
+            formData.entity_type_selections.push(dataSet);
 
+            sendJob(formData);
         }}>
             {props.title}
         </div>
@@ -36,7 +75,7 @@ export function HcLlSelectEntityFromList(props: { title: string, setIndex: strin
 }
 
 
-export function HcLlListItemMinimal2Fields(props: { fields: IDoubleList, setIndex: string,  parentCallback: ISetIndex }) {
+export function HcLlListItemMinimal2Fields(props: { fields: IDoubleList, setIndex: string, parentCallback: ISetIndex }) {
     const active: boolean = props.fields.key == props.setIndex;
     let klasse: string = "";
     if (active) {
@@ -44,7 +83,6 @@ export function HcLlListItemMinimal2Fields(props: { fields: IDoubleList, setInde
     } else {
         klasse = "hcAlignVertical hcIsLink";
     }
-
 
 
     return (

@@ -41,8 +41,8 @@ ReactDOM.render(
                 "research": ({state}) => <ResearchPick parentCallBack={switchState} setValue={setContextValue} setJob={setContextJob} jobID={state.context.jobID} jobData={state.context.jobData} qsJobID={qsJobID}/>,
                 "create": ({state}) => <NewProject  parentCallBack={switchState} setValue={setContextValue} setJob={setContextJob} jobID={state.context.jobID} jobData={state.context.jobData}/>,
                 "fetch": ({state}) => <EditProjectBasics parentCallBack={switchState} setValue={setContextValue} setJob={setContextJob} jobID={state.context.jobID} jobData={state.context.jobData}/>,
-                "entity": ({state}) => <EntitySelection parentCallBack={switchState} jobData={state.context.jobData} />,
-                "datasets" : ({state}) => <PickDataSets parentCallBack={switchState} jobData={state.context.jobData} />,
+                "entity": ({state}) => <EntitySelection parentCallBack={switchState} jobData={state.context.jobData} setJob={setContextJob}/>,
+                "datasets" : ({state}) => <PickDataSets parentCallBack={switchState} jobData={state.context.jobData} setJob={setContextJob}/>,
                 "": ({state}) => <div>The GUI for {state.value} is not yet defined</div>
             })}
     </div>,

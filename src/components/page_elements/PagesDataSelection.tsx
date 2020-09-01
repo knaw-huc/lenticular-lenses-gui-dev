@@ -15,9 +15,10 @@ import {HclLIconDataSelection, HclLIconAlignment} from './GoldenAgents';
 import {
     IDataSelectionDetailPage,
     IDataSelectionListPage,
-    IModalSelectDatasetPage,
-    ISetIndex
+    IModalSelectDatasetPage, ISendEvent,
+    ISetIndex, ISetJobEvent
 } from "../../misc/interfaces";
+import {IJob} from "../../misc/apiInterfaces";
 
 
 export function HcLlLayoutDataSelectionOverview(props: {pageData: IDataSelectionListPage}) {
@@ -154,7 +155,7 @@ export function HcLlDataSelectionDetail(props: {pageData: IDataSelectionDetailPa
 {/* Modal select dataset */
 }
 
-export function HcLlSelectDataset(props: {pageData: IModalSelectDatasetPage, parentCallback: ISetIndex}) {
+export function HcLlSelectDataset(props: {pageData: IModalSelectDatasetPage, parentCallback: ISetIndex, jobData: IJob, switchState:ISendEvent, setJob: ISetJobEvent}) {
 
     return (
         <React.Fragment>
@@ -179,7 +180,7 @@ export function HcLlSelectDataset(props: {pageData: IModalSelectDatasetPage, par
                     <div className="hcLabel">Entity</div>
                     <div className="hcList ">
                         {props.pageData.detailInfoEntities.map(item => (
-                            <HcLlSelectEntityFromList title={item.field} setIndex={props.pageData.setIndex}/>))}
+                            <HcLlSelectEntityFromList title={item.field} setIndex={props.pageData.setIndex} jobData={props.jobData} switchState={props.switchState} setJob={props.setJob}/>))}
                     </div>
                 </div>
             </div>

@@ -2,9 +2,9 @@ import React from 'react';
 import {HcHeaderGoldenAgents} from "../page_elements/GoldenAgents";
 import {HcLlLayoutDataSelectionOverview} from "../page_elements/Pages";
 import {IJob} from "../../misc/apiInterfaces";
-import {IDataSelectionListPage, ISendEvent} from "../../misc/interfaces";
+import {IDataSelectionListPage, ISendEvent, ISetJobEvent} from "../../misc/interfaces";
 
-export function EntitySelection(props: {parentCallBack: ISendEvent, jobData:IJob}) {
+export function EntitySelection(props: {parentCallBack: ISendEvent, jobData:IJob, setJob: ISetJobEvent}) {
     const pd:IDataSelectionListPage = {
         pageTitle: "Data selection - list",
         pageNavDs: true,
