@@ -5,7 +5,7 @@ import {
     IAlignmentList, IClusterList,
     IDoubleList,
     IDsList,
-    ILinkList, ISendEvent, ISetIndex, ISetJob, ISetJobEvent,
+    ILinkList, IReloadDatasets, ISendEvent, ISetIndex, ISetBufferIndex, ISetBufferIndexEvent, ISetJob, ISetJobEvent,
     ITripleList
 } from "../../misc/interfaces";
 import {IJob, IJobDataSet, ILensSpecs, ILinkSetSpecs} from "../../misc/apiInterfaces";
@@ -51,7 +51,6 @@ export function HcLlSelectEntityFromList(props: { title: string, setIndex: strin
             }
             props.setJob(sj);
             props.switchState("ENTITY");
-            console.log(json);
         } else {
             console.log(json);
         }
@@ -112,11 +111,59 @@ export function HcLlListLabel(props: { title: string }) {
 }
 
 
-export function HcLlListItemDataSelection(props: { idsList: IDsList }) {
+export function HcLlListItemDataSelection(props: { parentCallBack: ISendEvent, idsList: IDsList, jobData:IJob, setJob: ISetJobEvent, reload: IReloadDatasets, setBufferIndex: ISetBufferIndexEvent }) {
+    function duplicate(index: number): void {
+        let job = props.jobData;
+        const buffer = JSON.parse(JSON.stringify(job.entity_type_selections));
+        let currentDataSet: IJobDataSet = buffer[index];
+        job.entity_type_selections.push(currentDataSet);
+        sendJob(job);
+    }
+
+    function remove(index: number): void {
+        let job = props.jobData;
+        job.entity_type_selections.splice(index, 1);
+        sendJob(job);
+    }
+
+    async function sendJob(job: IJob) {
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(job)
+        };
+        const response = await fetch("/job/update", requestOptions);
+        const json: any = await response.json();
+
+        if (json.result === "updated") {
+            update_data(job);
+        } else {
+            console.log(json);
+        }
+    }
+
+    function update_data(job: IJob) {
+        const struc:ISetJob = {
+            type: "SET_JOB",
+            value: job
+        }
+        props.setJob(struc);
+        props.reload();
+    }
+
+    function loadPage(index: number): void {
+        const struc: ISetBufferIndex = {
+            type: "SET_INDEX",
+            value: index
+        };
+        props.setBufferIndex(struc);
+        props.parentCallBack("DATASET_DETAIL");
+    }
+
 
     return (
         <div className="hcListBasicResult">
-            <div className="hcListItemLong">
+            <div className="hcListItemLong" onClick={() => {loadPage(props.idsList.dsIndex)}}>
                 <strong><HclLIconDataSelection/> {props.idsList.dsName}</strong>
                 <div className="hcSmallTxt">
                     {props.idsList.dsDataset}
@@ -125,9 +172,9 @@ export function HcLlListItemDataSelection(props: { idsList: IDsList }) {
                     {props.idsList.dsProvider}
                 </div>
             </div>
-            <div><a href="">Show sample</a></div>
-            <div><a href="">Duplicate</a></div>
-            <div><a href="">Delete</a></div>
+            <div className="hcListActionItem" onClick={() => {alert("No samples available.");}}>Show sample</div>
+            <div className="hcListActionItem" onClick={() => {duplicate(props.idsList.dsIndex)}}>Duplicate</div>
+            <div className="hcListActionItem" onClick={() => {remove(props.idsList.dsIndex)}}>Delete</div>
         </div>
     );
 }

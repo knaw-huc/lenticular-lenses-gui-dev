@@ -4,7 +4,7 @@ import {HcLlLayoutProjectDetail} from "../page_elements/Pages";
 import {ISendEvent, ISetJobEvent, ISetValue, ISetJob, ISetValueEvent} from "../../misc/interfaces";
 import {useState, useEffect} from "react";
 import {IJob} from "../../misc/apiInterfaces";
-import {API_LOCATION} from "../../misc/config";
+import {API_LOCATION, appName} from "../../misc/config";
 
 export function EditProjectBasics(props: { parentCallBack: ISendEvent, setValue: ISetValueEvent, setJob:ISetJobEvent, jobID:string, jobData:IJob}) {
     const [loading, setLoading] = useState(true);
@@ -27,11 +27,11 @@ export function EditProjectBasics(props: { parentCallBack: ISendEvent, setValue:
     return (
         <div className="App">
             {loading ? (
-                <HcHeaderGoldenAgents toolName='Lenticular Lenses'
+                <HcHeaderGoldenAgents toolName={appName}
                                       projectName='Loading...'/>
             ) : (
                 <div>
-                <HcHeaderGoldenAgents toolName='Lenticular Lenses' projectName={job.job_title}/>
+                <HcHeaderGoldenAgents toolName={appName} projectName={job.job_title}/>
                 <HcLlLayoutProjectDetail parentCallBack={props.parentCallBack} setValue={props.setValue} setJob={props.setJob} jobID={props.jobID} jobData={props.jobData}/>
                 </div>
                 )}

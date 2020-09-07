@@ -18,7 +18,15 @@ import {
     IModalSelectDatasetPage,
     IAlignmentListPage,
     IAlignmentDetailPage,
-    ISendEvent, ISetValueEvent, ISetValue, ISetJobEvent, ISetIndex
+    ISendEvent,
+    ISetValueEvent,
+    ISetValue,
+    ISetJobEvent,
+    ISetIndex,
+    ISetBufferIndex,
+    IReloadDatasets,
+    ISetBufferIndexEvent,
+    IDataSelectionDetailPage, IDataSetDetailForm, ISetJob
 } from "../../misc/interfaces";
 import { IJob, IJobBasic, ILensSpecs, ILinkSetSpecs, IUpdateJob} from "../../misc/apiInterfaces";
 import {API_LOCATION, AUTH_SERVER} from "../../misc/config";
@@ -232,7 +240,12 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
 }
 
 
-export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEvent, pageData: IDataSelectionListPage }) {
+export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEvent, pageData: IDataSelectionListPage, jobData:IJob, setJob: ISetJobEvent, setBufferIndex: ISetBufferIndexEvent }) {
+    const [refresh, setRefresh] = useState(true);
+
+    const reload: IReloadDatasets = () => {
+        setRefresh(!refresh);
+    }
 
     return (<React.Fragment>
         <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
@@ -259,20 +272,19 @@ export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEv
                     <HcLlListLabel title="Data selections"/>
                 </div>
 
-                <div>
+                {/*<div>
                     <select className="" name="">
                         <option value="">Order by name</option>
                         <option value="">Order by date updated</option>
                         <option value="">Order by date create</option>
                     </select>
-                </div>
+                </div>*/}
             </div>
 
             <div className="hcList hcListDisctinctLines hcBasicSideMargin hcMarginBottom2">
                 {/* results */}
                 {props.pageData.dsList.map(item => (
-                    <HcLlListItemDataSelection idsList={item}/>))}
-
+                    <HcLlListItemDataSelection parentCallBack={props.parentCallBack} idsList={item} jobData={props.jobData} setJob={props.setJob} reload={reload} setBufferIndex={props.setBufferIndex} />))}
             </div>
             {/* pagination */}
             <HcResultListPaging/>
@@ -281,58 +293,116 @@ export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEv
 }
 
 
-export function HcLlDataSelectionDetail(props: { pageData: IModalSelectDatasetPage }) {
+export function HcLlDataSelectionDetail(props: { pageData: IDataSelectionDetailPage, parentCallBack: ISendEvent, jobData: IJob, setJob: ISetJobEvent, dsIndex: number}) {
+    const [tab, setTab] = useState("info");
+    const formData: IDataSetDetailForm = {
+        label: props.pageData.pageTitle,
+        description: props.pageData.description
+    }
+
+    function change(item: string) {
+        setTab(item);
+    }
+
+    function submit() {
+        let job = props.jobData;
+        job.entity_type_selections[props.dsIndex].label = formData.label;
+        job.entity_type_selections[props.dsIndex].description = formData.description;
+        sendJob(job);
+    }
+
+    async function sendJob(job: IJob) {
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(job)
+        };
+        const response = await fetch("/job/update", requestOptions);
+        const json: any = await response.json();
+
+        if (json.result === "updated") {
+            update_data(job);
+        } else {
+            console.log(json);
+        }
+    }
+
+    function update_data(job: IJob) {
+        const struc: ISetJob = {
+            type: "SET_JOB",
+            value: job
+        }
+        props.setJob(struc);
+        props.parentCallBack("ENTITY");
+    }
+
+    function handleChange(e: React.FormEvent<HTMLInputElement>): void {
+        switch (e.currentTarget.name) {
+            case "label":
+                formData.label= e.currentTarget.value;
+                break;
+        }
+    }
+
+    function handleTextChange(e: React.FormEvent<HTMLTextAreaElement>): void {
+        formData.description = e.currentTarget.value;
+    }
 
     return (<React.Fragment>
             <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
                                isDs={props.pageData.pageNavDs}/>
-            <div className="hcContentContainer hcMarginBottom3">
+            {/*<div className="hcContentContainer hcMarginBottom3">
                 <div className="hcRowJustify">
                     <div className="hcBasicSideMargin">
                         <h3><HclLIconDataSelection/>
-                            Marriages in 1600-1649</h3>
+                            {props.pageData.pageTitle}</h3>
                     </div>
                 </div>
-            </div>
+            </div>*/}
 
             <div className="hcContentContainer hcMarginBottom5">
                 <div className="hcTabs hcTabsHoriz hcBasicSideMargin">
                     <div className="hcTabLabels">
-                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-info">Info</div>
-                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-dataset">Dataset</div>
-                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-filter">Filter</div>
-                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-sample">Sample</div>
-                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-relation">Relation</div>
+                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-info" onClick={() => setTab("info")}>Info</div>
+                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-dataset" onClick={() => setTab("set")}>Dataset</div>
+                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-filter" onClick={() => setTab("filter")}>Filter</div>
+                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-sample" onClick={() => setTab("sample")}>Sample</div>
+                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-relation" onClick={() => setTab("relation")}>Relation</div>
                     </div>
                     <div className="hcTabAllContent hcStickOutBoxAside hcRoundedCornersTop">
 
                         {/* tab: info */}
+                        {tab === "info" ? (
                         <div className="hcTabContent hcMarginTop2 hcForm" id="tab-content-info">
-                            <h3>Name</h3>
-                            <input type="text" name="name" defaultValue="defaultValue" className="hcMarginBottom2"/>
+                            <h3>Label</h3>
+                            <input type="text" name="label" defaultValue={props.pageData.pageTitle} className="hcMarginBottom2"  onChange={handleChange}/>
                             <h3>Description</h3>
-                            <textarea name="name" rows={4} className="hcMarginBottom1"/>
-                            <button type="button" name="button">
+                            <textarea name="description" rows={4} defaultValue={props.pageData.description} className="hcMarginBottom1"  onChange={handleTextChange}/><br/>
+                            <button type="button" name="button" onClick={() => submit()}>
                                 Save project
                             </button>
-                        </div>
-
+                            <button type="button" name="back" onClick={() => {props.parentCallBack("ENTITY")}}>
+                                Back
+                            </button>
+                        </div>) : (<div/>)
+                        }
                         {/* tab: Dataset and entity */}
+                        {tab === "set" ? (
                         <div className="hcTabContent hcMarginTop2" id="tab-content-dataset">
                             <h3>Dataset and entity</h3>
                             <div>
                                 <div className="hc2columns hcMarginBottom2">
                                     <div>
                                         <div className="hcLabel">dataset</div>
-                                        Enriched version of the Index op ondertrouwregisters
-                                        <div className="hcSmallTxt hcClrTxt_Grey">
+                                        {props.pageData.dataset}
+                                        {/*<div className="hcSmallTxt hcClrTxt_Grey">
                                             Enriched version of the Index op ondertrouwregisters. Enrichment by
                                             Golden Agents.
-                                        </div>
+                                        </div>*/}
                                     </div>
                                     <div>
                                         <div className="hcLabel">entity</div>
-                                        saa_Person
+                                        {props.pageData.collection}
                                     </div>
                                 </div>
                                 <button type="button" name="button">
@@ -340,28 +410,35 @@ export function HcLlDataSelectionDetail(props: { pageData: IModalSelectDatasetPa
                                 </button>
                             </div>
 
-                        </div>
+                        </div>) : (<div/>)
+                        }
 
                         {/* tab: Filter */}
+                        {tab === "filter" ? (
                         <div className="hcTabContent hcMarginTop2 hcForm" id="tab-content-filter">
                             <h3>Filter</h3>
 
 
-                        </div>
+                        </div>) : (<div/>)
+                        }
 
                         {/* tab: Sample */}
+                        {tab === "sample" ? (
                         <div className="hcTabContent hcMarginTop2" id="tab-content-sample">
                             <h3>Sample</h3>
                             <div className="hc2columns">
                                 <div>Only use a sample of this amount of records (-1 is no limit)</div>
                                 <div><input type="number" value="-1"/></div>
                             </div>
-                        </div>
+                        </div>) : (<div/>)
+                        }
 
                         {/* tab: Relation */}
+                        {tab === "relation" ? (
                         <div className="hcTabContent hcMarginTop2" id="tab-content-relation">
                             <h3>Relation</h3>
-                        </div>
+                        </div>) : (<div/>)
+                        }
 
                     </div>
                 </div>

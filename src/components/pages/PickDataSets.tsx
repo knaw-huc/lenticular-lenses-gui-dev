@@ -15,12 +15,20 @@ import {
     IDataSets,
     ISetIndex, ISetJobEvent
 } from "../../misc/interfaces";
-import {API_LOCATION, GOLDEN_AGENTS_REPOSITORY} from "../../misc/config";
+import {API_LOCATION, appName, GOLDEN_AGENTS_REPOSITORY} from "../../misc/config";
 
-export function PickDataSets(props: { parentCallBack: ISendEvent, jobData: IJob, setJob: ISetJobEvent }) {
+export function PickDataSets(props: { parentCallBack: ISendEvent, jobData: IJob, setJob: ISetJobEvent, hsid: string | null }) {
     const [loading, setLoading] = useState(true);
     const [refreshToggle, setRefreshToggle] = useState(true);
     const url = API_LOCATION + GOLDEN_AGENTS_REPOSITORY;
+    let options: any = {}
+    if (props.hsid !== null) {
+        options = {
+            headers: {
+                authorization: props.hsid
+            }
+        }
+    }
 
     let pd: IModalSelectDatasetPage = {
         pageTitle: "Modal select dataset",
@@ -38,7 +46,8 @@ export function PickDataSets(props: { parentCallBack: ISendEvent, jobData: IJob,
     const [dataSets, setDataSets] = useState<IDataSets | any>();
 
     async function fetchDataSets() {
-        const response = await fetch(url);
+
+        const response = await fetch(url, options);
         const json = await response.json();
         const obj = Object.keys(json);
         const g: string = obj[0].toString();
@@ -93,7 +102,7 @@ export function PickDataSets(props: { parentCallBack: ISendEvent, jobData: IJob,
 
     return (
         <div className="App">
-            <HcHeaderGoldenAgents toolName='Lenticular Lenses'
+            <HcHeaderGoldenAgents toolName={appName}
                                   projectName={props.jobData.job_title}/>
             {!loading ? (<HcModal parentCallBack={props.parentCallBack} modalName='Select dataset'>
                     <HcLlSelectDataset pageData={pageData} parentCallback={setIndex} jobData={props.jobData} switchState={props.parentCallBack} setJob={props.setJob}/>

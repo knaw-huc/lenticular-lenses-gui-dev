@@ -24,9 +24,10 @@ export interface IDataSelectionListPage {
 }
 
 export interface IDsList {
-    "dsName": string,
-    "dsDataset": string,
-    "dsProvider": string
+    dsName: string,
+    dsDataset: string,
+    dsProvider: string,
+    dsIndex: number
 }
 
 export interface IModalSelectDatasetPage {
@@ -137,6 +138,9 @@ export interface ITripleList {
 
 export interface IDataSelectionDetailPage {
     "pageTitle": string,
+    "description": string,
+    "dataset": string,
+    "collection": string,
     "pageNavDs": boolean,
     "pageNavAl": boolean,
     "filters": IFilterList[]
@@ -149,12 +153,21 @@ export interface IFilterList {
     "condition": string
 }
 
+export interface IDataSetDetailForm {
+    label: string,
+    description: string
+}
+
 export interface IFilterRows{
     "entities": string[]
 }
 
 export interface ISendEvent {
     (name: string): void
+}
+
+export interface IReloadDatasets {
+    (): void
 }
 
 export interface ISetValue {
@@ -169,6 +182,15 @@ export interface ISetValueEvent {
 export interface ISetJob {
     type: "SET_JOB",
     value: IJob
+}
+
+export interface ISetBufferIndex {
+    type: "SET_INDEX",
+    value: number
+}
+
+export interface ISetBufferIndexEvent {
+    (atruc: ISetBufferIndex): void;
 }
 
 export interface ISetJobEvent {
@@ -207,6 +229,10 @@ export interface IDataSets {
 
 export interface ISetIndex {
     (index: string):void
+}
+
+export interface  ICreateList {
+    (job: IJob): IDsList
 }
 
 

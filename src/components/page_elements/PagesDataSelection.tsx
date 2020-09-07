@@ -56,12 +56,12 @@ export function HcLlLayoutDataSelectionOverview(props: {pageData: IDataSelection
                 </div>
             </div>
 
-            <div className="hcList hcListDisctinctLines hcBasicSideMargin hcMarginBottom2">
-                {/* results */}
+            {/*<div className="hcList hcListDisctinctLines hcBasicSideMargin hcMarginBottom2">
+                 results
                 {props.pageData.dsList.map(item => (
                     <HcLlListItemDataSelection idsList={item}/>))}
 
-            </div>
+            </div>*/}
             {/* pagination */}
             <HcResultListPaging/>
         </div>

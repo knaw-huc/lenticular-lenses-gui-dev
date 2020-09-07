@@ -12,6 +12,7 @@ export function defaultIJobDataSet() {
         },
         id: -1,
         label: "New data selection",
+        description: "Description",
         filter: {
             conditions: [{
                 property: []

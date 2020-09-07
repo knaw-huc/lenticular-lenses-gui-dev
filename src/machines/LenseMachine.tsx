@@ -1,17 +1,19 @@
 import {assign, Machine} from "xstate";
 import { IJob, ILensSpecs, ILinkSetSpecs} from "../misc/apiInterfaces";
-import {ISetJob, ISetValue, ISetValueEvent} from "../misc/interfaces";
+import {ISetBufferIndex, ISetJob, ISetValue, ISetValueEvent} from "../misc/interfaces";
 
 export const lenseMachine = Machine<{
     jobData: IJob,
     jobID: string,
+    bufferedIndex: number
 }, {
     states: {
         research: {},
         create: {},
         fetch: {},
         entity: {},
-        datasets: {}
+        datasets: {},
+        dataset_detail: {}
     }
 }>({
     id: "lenticularLense",
@@ -28,14 +30,16 @@ export const lenseMachine = Machine<{
             linkset_specs: [],
             updated_at: ""
         },
-        jobID: ""
+        jobID: "",
+        bufferedIndex: 0
     },
     on: {
         research: "research",
         entity: "entity",
         create: "create",
         fetch: "fetch",
-        datasets: "datasets"
+        datasets: "datasets",
+        dataset_detail: "dataset_detail"
     },
     states: {
         research: {
@@ -80,12 +84,27 @@ export const lenseMachine = Machine<{
         entity: {
             on: {
                 DATASETS: "datasets",
+                DATASET_DETAIL: "dataset_detail",
                 SET_JOB: {
                     actions: assign({jobData: (context, event: ISetJob) => event.value})
+                },
+                SET_INDEX: {
+                    actions: assign({bufferedIndex: (context, event: ISetBufferIndex) => event.value})
                 }
             }
         },
         datasets: {
+            on: {
+                ENTITY: "entity",
+                SET_JOB: {
+                    actions: assign({jobData: (context, event: ISetJob) => event.value})
+                },
+                SET_INDEX: {
+                    actions: assign({bufferedIndex: (context, event: ISetBufferIndex) => event.value})
+                }
+            }
+        },
+        dataset_detail: {
             on: {
                 ENTITY: "entity",
                 SET_JOB: {

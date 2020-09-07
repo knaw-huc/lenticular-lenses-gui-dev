@@ -378,7 +378,7 @@ flex-direction: row;
 display: flex; } }
 
 .hcListItemLong {
-flex: 2; }
+flex: 4; }
 
 .hcListHeader {
 background: none;
@@ -561,6 +561,7 @@ height: 40px; }
 background-color: #f0f5f9;
 max-width: 480px;
 background-color: #f0f5f9; }
+
 
 .hcForm textarea {
 height: auto;
@@ -1065,7 +1066,12 @@ cursor: pointer;
 padding: .5rem 1rem;
 display: flex;
 flex-direction: row;
-align-items: center; }
+align-items: center;
+border-left: 1px solid #aaaaaa;
+border-top: 1px solid #aaaaaa;
+border-right: 1px solid #aaaaaa;
+background-color: rgb(244, 244, 244);
+}
 
 .hcFormItem {
 display: flex;
@@ -1660,4 +1666,9 @@ width: 80px;
 
 .hcEntityName {
 cursor: pointer;
+}
+
+.hcListActionItem {
+color: #0087d4;
+display: inline;
 }

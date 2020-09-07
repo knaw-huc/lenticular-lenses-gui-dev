@@ -15,6 +15,7 @@ export interface IJobDataSet {
     dataset: IEtsDataSet,
     id: number,
     label: string,
+    description: string,
     filter: IFilter,
     limit: number,
     properties: string[],
