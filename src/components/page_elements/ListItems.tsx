@@ -41,7 +41,7 @@ export function HcLlSelectEntityFromList(props: { title: string, setIndex: strin
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(formData)
         };
-        const response = await fetch("/job/update", requestOptions);
+        const response = await fetch(API_LOCATION + "/job/update", requestOptions);
         const json: any = await response.json();
 
         if (json.result === "updated") {
@@ -132,7 +132,7 @@ export function HcLlListItemDataSelection(props: { parentCallBack: ISendEvent, i
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(job)
         };
-        const response = await fetch("/job/update", requestOptions);
+        const response = await fetch(API_LOCATION + "/job/update", requestOptions);
         const json: any = await response.json();
 
         if (json.result === "updated") {

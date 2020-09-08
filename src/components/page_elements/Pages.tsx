@@ -161,7 +161,7 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(formData)
         };
-        const response = await fetch("/job/create", requestOptions);
+        const response = await fetch(API_LOCATION + "/job/create", requestOptions);
         const data = await response.json();
         console.log(data);
         if (data.result === "created") {
@@ -197,7 +197,7 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updateValues)
         };
-        const response = await fetch("job/update", requestOptions);
+        const response = await fetch(API_LOCATION + "job/update", requestOptions);
         console.log(response);
         const data = await response.json();
         if (data.result !== undefined && data.result === "updated") {
@@ -317,7 +317,7 @@ export function HcLlDataSelectionDetail(props: { pageData: IDataSelectionDetailP
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(job)
         };
-        const response = await fetch("/job/update", requestOptions);
+        const response = await fetch(API_LOCATION + "/job/update", requestOptions);
         const json: any = await response.json();
 
         if (json.result === "updated") {
