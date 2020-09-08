@@ -6,12 +6,11 @@ networks:
       name: nginxproxynetwork
 
 services:
-
-  esta:
+  lensgui:
     build:
       context: ./
       dockerfile: Dockerfile
-    container_name: esta_app
+    container_name: lens_app
     restart: always
     environment:
       - VIRTUAL_HOST=lensgui.sd.di.huc.knaw.nl
