@@ -9,7 +9,7 @@ export function NewProject(props: {parentCallBack: ISendEvent, setValue:ISetValu
     return (
         <div className="App">
             <HcHeaderGoldenAgents toolName={appName}
-                                  projectName='New project' />
+                                  projectName='New research' />
             <HcLlLayoutProjectDetail parentCallBack={props.parentCallBack} setValue={props.setValue} setJob={props.setJob} jobID={props.jobID} jobData={props.jobData}/>
         </div>
     )

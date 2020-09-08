@@ -19,7 +19,7 @@ export default function ResearchPick(props: {parentCallBack: ISendEvent, setValu
     return (
         <div className="App">
             <HcHeaderGoldenAgents toolName={appName}
-                                  projectName='Select project' />
+                                  projectName='Select research' />
             <HcLlLayoutHome pageData={homeData} parentCallBack={props.parentCallBack} setValue={props.setValue} setJob={props.setJob} jobID={props.jobID} qsJobID={qsID}/>
         </div>
     );

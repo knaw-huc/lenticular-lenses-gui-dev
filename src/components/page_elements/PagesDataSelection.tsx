@@ -94,7 +94,7 @@ export function HcLlDataSelectionDetail(props: {pageData: IDataSelectionDetailPa
                             <h3>Description</h3>
                             <textarea name="name" rows={4} className="hcMarginBottom1"/>
                             <button type="button" name="button">
-                                Save project
+                                Save research
                             </button>
                         </div>
 

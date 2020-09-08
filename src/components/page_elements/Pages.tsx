@@ -29,7 +29,7 @@ import {
     IDataSelectionDetailPage, IDataSetDetailForm, ISetJob
 } from "../../misc/interfaces";
 import { IJob, IJobBasic, ILensSpecs, ILinkSetSpecs, IUpdateJob} from "../../misc/apiInterfaces";
-import {API_LOCATION, AUTH_SERVER} from "../../misc/config";
+import {API_LOCATION, APP_HOME, AUTH_SERVER} from "../../misc/config";
 
 export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISendEvent, setValue: ISetValueEvent, setJob: ISetJobEvent, jobID: string, qsJobID: string }) {
     let projectID: string = props.qsJobID;
@@ -42,7 +42,7 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
 
     function submit() {
         if (projectID === "") {
-            setError("No project ID given!");
+            setError("No research ID given!");
         } else {
             getProject();
         }
@@ -77,13 +77,13 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
             {/* left column */}
             <div className="hcMarginBottom2 hcBasicSideMargin">
                 <h2>
-                    New project
+                    New research
                 </h2>
-                Start a new project to reconcile one or more datasets.
+                Start a new research to reconcile one or more datasets.
                 <br/>
                 <br/>
                 <button type="button" name="button" onClick={() => props.parentCallBack("NEW")}>
-                    New project
+                    New research
                 </button>
                 <div className="hcLoginArea">
                     <h2>Login</h2>
@@ -96,18 +96,18 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
 
             {/* right column */}
             <div className="hcBasicSideMargin hcMarginBottom4">
-                <h2>Projects</h2>
+                <h2>Existing research</h2>
                 <div>&nbsp;</div>
                 {/*<div className="hcList hcMarginBottom4">
                     {props.pageData.projectList.map(item => (<HcLlListItemMinimal title={item.prName}/>))}
                 </div>*/}
                 <div className="hcStickOutBox hcRoundedCorners">
                     <p className="hcMarginBottom1">
-                        Enter your project ID:
+                        Enter your research ID:
                     </p>
                     <input type="text" name="projectID" onChange={handleChange} className="hcMarginBottom1" defaultValue={props.qsJobID}/>
                     <button type="button" name="button" onClick={submit}>
-                        Load project
+                        Load research
                     </button>
                 </div>
             </div>
@@ -167,6 +167,7 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
         if (data.result === "created") {
             props.setValue({type: "SET_ID", value: data.job_id});
         }
+        window.location.href = APP_HOME + "?job_id=" + data.job_id;
         //props.parentCallBack("FETCH");
     }
 
@@ -212,21 +213,21 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
 
             {/* left column */}
             <div className="hcMarginBottom2 hcBasicSideMargin hcForm">
-                <h3>Project name</h3>
+                <h3>Research name</h3>
                 <input type="text" name="job_title" defaultValue={formData.job_title} onChange={handleChange}
                        className="hcMarginBottom2"/>
 
-                <h3>Project description</h3>
+                <h3>Research description</h3>
                 <textarea className="hcMarginBottom1" name="job_description"
                           defaultValue={formData.job_description} onChange={handleTextChange}>
 
                 </textarea>
 
-                <h3>Project link</h3>
+                <h3>Research link</h3>
                 <input type="text" name="job_link" defaultValue={formData.job_link} onChange={handleChange}
                        className="hcMarginBottom2"/>
-                <button type="button" onClick={() => sendData()}>Save project</button>
                 <button type="button" onClick={() => props.parentCallBack("RESEARCH")}>Back</button>
+                <button type="button" onClick={() => sendData()}>Save research</button>
                 {!newJob ? (
                     <button type="button" onClick={() => props.parentCallBack("ENTITY")}>Next</button>
                 ) : (<div/>)}
@@ -379,7 +380,7 @@ export function HcLlDataSelectionDetail(props: { pageData: IDataSelectionDetailP
                             <h3>Description</h3>
                             <textarea name="description" rows={4} defaultValue={props.pageData.description} className="hcMarginBottom1"  onChange={handleTextChange}/><br/>
                             <button type="button" name="button" onClick={() => submit()}>
-                                Save project
+                                Save research
                             </button>
                             <button type="button" name="back" onClick={() => {props.parentCallBack("ENTITY")}}>
                                 Back
@@ -580,7 +581,7 @@ export function HcLlAlignmentDetail(props: { pageData: IAlignmentDetailPage }) {
                             <h3>Description</h3>
                             <textarea name="name" rows={4} className="hcMarginBottom1"/>
                             <button type="button" name="button">
-                                Save project
+                                Save research
                             </button>
                         </div>
 

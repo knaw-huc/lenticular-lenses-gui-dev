@@ -8,6 +8,7 @@ export const lenseMachine = Machine<{
     bufferedIndex: number
 }, {
     states: {
+        idle: {},
         research: {},
         create: {},
         fetch: {},
@@ -16,7 +17,7 @@ export const lenseMachine = Machine<{
         dataset_detail: {}
     }
 }>({
-    id: "lenticularLense",
+    id: "lenticularLens",
     initial: "research",
     context: {
         jobData: {
@@ -42,6 +43,7 @@ export const lenseMachine = Machine<{
         dataset_detail: "dataset_detail"
     },
     states: {
+        idle: {},
         research: {
             on: {
                 NEW: "create",

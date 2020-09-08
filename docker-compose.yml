@@ -18,4 +18,4 @@ services:
     ports:
       - 8084:80
     networks:
-      - lensegui_network
+      - lensgui_network

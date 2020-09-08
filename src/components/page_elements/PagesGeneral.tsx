@@ -12,13 +12,13 @@ export function HcLlLayoutHome(props: {pageData: IHomePage}) {
                 {/* left column */}
                 <div className="hcMarginBottom2 hcBasicSideMargin">
                     <h2>
-                        New project
+                        New research
                     </h2>
-                    Start a new project to reconcile one or more datasets.
+                    Start a new research to reconcile one or more datasets.
                     <br/>
                     <br/>
                     <button type="button" name="button">
-                        New project
+                        New research
                     </button>
                     <div className="hcLoginArea">
                         <button type="button" name="loginButton">
@@ -29,17 +29,17 @@ export function HcLlLayoutHome(props: {pageData: IHomePage}) {
 
                 {/* right column */}
                 <div className="hcBasicSideMargin hcMarginBottom4">
-                    <h2>Projects</h2>
+                    <h2>Research</h2>
                     <div className="hcList hcMarginBottom4">
                         {props.pageData.projectList.map(item => (<HcLlListItemMinimal title={item.prName}/>))}
                     </div>
                     <div className="hcStickOutBox hcRoundedCorners">
                         <p className="hcMarginBottom1">
-                            Or enter your project ID:
+                            Or enter your research ID:
                         </p>
                         <input type="text" name="name" defaultValue="defaultValue" className="hcMarginBottom1"/>
                         <button type="button" name="button">
-                            Load project
+                            Load research
                         </button>
                     </div>
                 </div>
@@ -59,15 +59,15 @@ export class HcLlLayoutProjectDetail extends React.Component {
 
                 {/* left column */}
                 <div className="hcMarginBottom2 hcBasicSideMargin hcForm">
-                    <h3>Project name</h3>
-                    Start a new project to reconcile one or more datasets.
+                    <h3>Research name</h3>
+                    Start a new research to reconcile one or more datasets.
                     <input type="text" name="" value="" className="hcMarginBottom2"/>
 
-                    <h3>Project description</h3>
-                    Start a new project to reconcile one or more datasets.
+                    <h3>Research description</h3>
+                    Start a new research to reconcile one or more datasets.
                     <textarea rows={4} className="hcMarginBottom1"></textarea>
 
-                    <button type="button">Save project</button>
+                    <button type="button">Save research</button>
                 </div>
 
                 {/* right column */}

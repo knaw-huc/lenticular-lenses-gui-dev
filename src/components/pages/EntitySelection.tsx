@@ -12,8 +12,8 @@ import {
 } from "../../misc/interfaces";
 import {appName} from "../../misc/config";
 
-export function EntitySelection(props: {parentCallBack: ISendEvent, jobData:IJob, setJob: ISetJobEvent, setBufferIndex: ISetBufferIndexEvent}) {
-    const pd:IDataSelectionListPage = {
+export function EntitySelection(props: { parentCallBack: ISendEvent, jobData: IJob, setJob: ISetJobEvent, setBufferIndex: ISetBufferIndexEvent }) {
+    const pd: IDataSelectionListPage = {
         pageTitle: "Data selection - list",
         pageNavDs: true,
         pageNavAl: false,
@@ -23,22 +23,25 @@ export function EntitySelection(props: {parentCallBack: ISendEvent, jobData:IJob
 
     function createList(jd: IJob): IDsList[] {
         let retList: IDsList[] = [];
-        jd.entity_type_selections.map((item, index) => {
-            const buffer: IDsList = {
-                dsName: item.label,
-                dsDataset: item.description,
-                dsProvider: "",
-                dsIndex: index
-            }
-            retList.push(buffer);
-        });
+        if (jd.entity_type_selections !== null) {
+            jd.entity_type_selections.map((item, index) => {
+                const buffer: IDsList = {
+                    dsName: item.label,
+                    dsDataset: item.description,
+                    dsProvider: "",
+                    dsIndex: index
+                }
+                retList.push(buffer);
+            });
+        }
         return retList;
     }
 
     return (
-      <div className="App">
-          <HcHeaderGoldenAgents toolName={appName} projectName={props.jobData.job_title} />
-          <HcLlLayoutDataSelectionOverview parentCallBack={props.parentCallBack} pageData={pd} jobData={props.jobData} setJob={props.setJob} setBufferIndex={props.setBufferIndex}/>
-      </div>
+        <div className="App">
+            <HcHeaderGoldenAgents toolName={appName} projectName={props.jobData.job_title}/>
+            <HcLlLayoutDataSelectionOverview parentCallBack={props.parentCallBack} pageData={pd} jobData={props.jobData}
+                                             setJob={props.setJob} setBufferIndex={props.setBufferIndex}/>
+        </div>
     );
 }

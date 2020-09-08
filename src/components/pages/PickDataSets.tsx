@@ -46,7 +46,7 @@ export function PickDataSets(props: { parentCallBack: ISendEvent, jobData: IJob,
     const [dataSets, setDataSets] = useState<IDataSets | any>();
 
     async function fetchDataSets() {
-
+        console.log(url);
         const response = await fetch(url, options);
         const json = await response.json();
         const obj = Object.keys(json);
