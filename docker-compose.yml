@@ -14,7 +14,5 @@ services:
     restart: always
     environment:
       - VIRTUAL_HOST=lensgui.sd.di.huc.knaw.nl
-    ports:
-      - 8084:80
     networks:
       - lensgui_network
