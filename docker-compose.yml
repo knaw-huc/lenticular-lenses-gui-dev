@@ -1,31 +1,11 @@
 version: '2'
 
 networks:
-  esta_network:
+  lensgui_network:
     external:
       name: nginxproxynetwork
 
 services:
-  esta_mysql:
-    image: mysql:5.7
-    container_name: esta_mysql
-    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
-    restart: always
-    expose:
-      - 3307
-    environment:
-      MYSQL_USER: user
-      MYSQL_PASSWORD: user
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: default_schema
-      VIRTUAL_PORT: 3307
-    volumes:
-      - /data/docker/volumes/ESTAdata/_data/mysql:/var/lib/mysql
-      - /data/docker/volumes/robTempHome/_data:/home
-    ports:
-      - 3307:3306
-    networks:
-      - esta_network
 
   esta:
     build:
@@ -34,10 +14,8 @@ services:
     container_name: esta_app
     restart: always
     environment:
-      - VIRTUAL_HOST=esta.sd.di.huc.knaw.nl
-    links:
-      - esta_mysql
+      - VIRTUAL_HOST=lensgui.sd.di.huc.knaw.nl
     ports:
-      - 8083:80
+      - 8084:80
     networks:
-      - esta_network
+      - lensegui_network
