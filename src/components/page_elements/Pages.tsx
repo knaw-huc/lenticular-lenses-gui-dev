@@ -248,6 +248,10 @@ export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEv
         setRefresh(!refresh);
     }
 
+    function newDataSelection() {
+        props.parentCallBack("DATASETS");
+    }
+
     return (<React.Fragment>
         <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
                            isDs={props.pageData.pageNavDs}/>
@@ -259,7 +263,7 @@ export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEv
                     <br/>They can be entities with filters on them.
                 </div>
                 <div className="hcBasicSideMargin">
-                    <button type="button" name="button" onClick={() => props.parentCallBack("DATASETS")}>
+                    <button type="button" name="button" onClick={() => newDataSelection()}>
                         New data selection
                     </button>
                 </div>
