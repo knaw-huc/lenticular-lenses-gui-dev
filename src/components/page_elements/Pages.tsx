@@ -59,7 +59,7 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
     }
 
     async function getProject() {
-        const url = API_LOCATION + "job/" + projectID;
+        const url = API_LOCATION + "/job/" + projectID;
         try {
             const response = await fetch(url);
             const json: IJob = await response.json();
@@ -198,7 +198,7 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(updateValues)
         };
-        const response = await fetch(API_LOCATION + "job/update", requestOptions);
+        const response = await fetch(API_LOCATION + "/job/update", requestOptions);
         console.log(response);
         const data = await response.json();
         if (data.result !== undefined && data.result === "updated") {
