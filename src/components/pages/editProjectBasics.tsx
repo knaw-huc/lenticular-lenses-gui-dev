@@ -11,7 +11,7 @@ export function EditProjectBasics(props: { parentCallBack: ISendEvent, setValue:
     const [job, setJob] = useState<IJob>(props.jobData);
 
     async function getProject() {
-        const url = API_LOCATION + "job/" + props.jobID;
+        const url = API_LOCATION + "/job/" + props.jobID;
         const response = await fetch(url);
         const json: IJob = await response.json();
         const struc: ISetJob = {type: "SET_JOB", value: json};
