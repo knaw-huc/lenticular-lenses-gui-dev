@@ -28,8 +28,9 @@ import {
     ISetBufferIndexEvent,
     IDataSelectionDetailPage, IDataSetDetailForm, ISetJob
 } from "../../misc/interfaces";
-import { IJob, IJobBasic, ILensSpecs, ILinkSetSpecs, IUpdateJob} from "../../misc/apiInterfaces";
+import {IJob, IJobBasic, IJobDataSet, ILensSpecs, ILinkSetSpecs, IUpdateJob} from "../../misc/apiInterfaces";
 import {API_LOCATION, APP_HOME, AUTH_SERVER} from "../../misc/config";
+import {defaultIJobDataSet} from "../../misc/functions";
 
 export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISendEvent, setValue: ISetValueEvent, setJob: ISetJobEvent, jobID: string, qsJobID: string }) {
     let projectID: string = props.qsJobID;
@@ -88,7 +89,9 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
                 <div className="hcLoginArea">
                     <h2>Login</h2>
                     Login to get access to private datasets.
-                    <button type="button" name="loginButton" className="loginBtn" onClick={() => {doLogin()}}>
+                    <button type="button" name="loginButton" className="loginBtn" onClick={() => {
+                        doLogin()
+                    }}>
                         Login
                     </button>
                 </div>
@@ -105,7 +108,8 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
                     <p className="hcMarginBottom1">
                         Enter your research ID:
                     </p>
-                    <input type="text" name="projectID" onChange={handleChange} className="hcMarginBottom1" defaultValue={props.qsJobID}/>
+                    <input type="text" name="projectID" onChange={handleChange} className="hcMarginBottom1"
+                           defaultValue={props.qsJobID}/>
                     <button type="button" name="button" onClick={submit}>
                         Load research
                     </button>
@@ -180,7 +184,6 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
         }
 
 
-
         if (props.jobData.entity_type_selections !== null) {
             updateValues.entity_type_selections = props.jobData.entity_type_selections;
         }
@@ -241,15 +244,57 @@ export function HcLlLayoutProjectDetail(props: { parentCallBack: ISendEvent, set
 }
 
 
-export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEvent, pageData: IDataSelectionListPage, jobData:IJob, setJob: ISetJobEvent, setBufferIndex: ISetBufferIndexEvent }) {
+export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEvent, pageData: IDataSelectionListPage, jobData: IJob, setJob: ISetJobEvent, setBufferIndex: ISetBufferIndexEvent }) {
     const [refresh, setRefresh] = useState(true);
 
     const reload: IReloadDatasets = () => {
         setRefresh(!refresh);
     }
 
+    let formData: IJob = {
+        entity_type_selections: props.jobData.entity_type_selections,
+        job_description: props.jobData.job_description,
+        job_id: props.jobData.job_id,
+        job_link: props.jobData.job_link,
+        job_title: props.jobData.job_title,
+        lens_specs: props.jobData.lens_specs,
+        linkset_specs: props.jobData.linkset_specs
+    }
+
+    async function sendJob(data: IJob) {
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(formData)
+        };
+        const response = await fetch(API_LOCATION + "/job/update", requestOptions);
+        const json: any = await response.json();
+
+        if (json.result === "updated") {
+            const sj: ISetJob = {
+                type: "SET_JOB",
+                value: formData
+            }
+            props.setJob(sj);
+
+            const index: number = formData.entity_type_selections.length - 1;
+            const struc: ISetBufferIndex = {
+                type: "SET_INDEX",
+                value: index
+            };
+            props.setBufferIndex(struc);
+            //console.log(formData.entity_type_selections.length);
+            props.parentCallBack("DATASET_DETAIL");
+        } else {
+            console.log(json);
+        }
+    }
+
     function newDataSelection() {
-        props.parentCallBack("DATASETS");
+        const dataSet: IJobDataSet = defaultIJobDataSet();
+        dataSet.id = formData.entity_type_selections.length;
+        formData.entity_type_selections.push(dataSet);
+        sendJob(formData);
     }
 
     return (<React.Fragment>
@@ -289,7 +334,9 @@ export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEv
             <div className="hcList hcListDisctinctLines hcBasicSideMargin hcMarginBottom2">
                 {/* results */}
                 {props.pageData.dsList.map(item => (
-                    <HcLlListItemDataSelection parentCallBack={props.parentCallBack} idsList={item} jobData={props.jobData} setJob={props.setJob} reload={reload} setBufferIndex={props.setBufferIndex} />))}
+                    <HcLlListItemDataSelection parentCallBack={props.parentCallBack} idsList={item}
+                                               jobData={props.jobData} setJob={props.setJob} reload={reload}
+                                               setBufferIndex={props.setBufferIndex}/>))}
             </div>
             {/* pagination */}
             <HcResultListPaging/>
@@ -298,7 +345,7 @@ export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEv
 }
 
 
-export function HcLlDataSelectionDetail(props: { pageData: IDataSelectionDetailPage, parentCallBack: ISendEvent, jobData: IJob, setJob: ISetJobEvent, dsIndex: number}) {
+export function HcLlDataSelectionDetail(props: { pageData: IDataSelectionDetailPage, parentCallBack: ISendEvent, jobData: IJob, setJob: ISetJobEvent, dsIndex: number }) {
     const [tab, setTab] = useState("info");
     const formData: IDataSetDetailForm = {
         label: props.pageData.pageTitle,
@@ -344,7 +391,7 @@ export function HcLlDataSelectionDetail(props: { pageData: IDataSelectionDetailP
     function handleChange(e: React.FormEvent<HTMLInputElement>): void {
         switch (e.currentTarget.name) {
             case "label":
-                formData.label= e.currentTarget.value;
+                formData.label = e.currentTarget.value;
                 break;
         }
     }
@@ -368,81 +415,95 @@ export function HcLlDataSelectionDetail(props: { pageData: IDataSelectionDetailP
             <div className="hcContentContainer hcMarginBottom5">
                 <div className="hcTabs hcTabsHoriz hcBasicSideMargin">
                     <div className="hcTabLabels">
-                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-info" onClick={() => setTab("info")}>Info</div>
-                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-dataset" onClick={() => setTab("set")}>Dataset</div>
-                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-filter" onClick={() => setTab("filter")}>Filter</div>
-                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-sample" onClick={() => setTab("sample")}>Sample</div>
-                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-relation" onClick={() => setTab("relation")}>Relation</div>
+                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-info"
+                             onClick={() => setTab("info")}>Info
+                        </div>
+                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-dataset"
+                             onClick={() => setTab("set")}>Dataset
+                        </div>
+                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-filter"
+                             onClick={() => setTab("filter")}>Filter
+                        </div>
+                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-sample"
+                             onClick={() => setTab("sample")}>Sample
+                        </div>
+                        <div className="hcTabLabel hcRoundedCornersTop" id="tab-list-relation"
+                             onClick={() => setTab("relation")}>Relation
+                        </div>
                     </div>
                     <div className="hcTabAllContent hcStickOutBoxAside hcRoundedCornersTop">
 
                         {/* tab: info */}
                         {tab === "info" ? (
-                        <div className="hcTabContent hcMarginTop2 hcForm" id="tab-content-info">
-                            <h3>Label</h3>
-                            <input type="text" name="label" defaultValue={props.pageData.pageTitle} className="hcMarginBottom2"  onChange={handleChange}/>
-                            <h3>Description</h3>
-                            <textarea name="description" rows={4} defaultValue={props.pageData.description} className="hcMarginBottom1"  onChange={handleTextChange}/><br/>
-                            <button type="button" name="button" onClick={() => submit()}>
-                                Save research
-                            </button>
-                            <button type="button" name="back" onClick={() => {props.parentCallBack("ENTITY")}}>
-                                Back
-                            </button>
-                        </div>) : (<div/>)
+                            <div className="hcTabContent hcMarginTop2 hcForm" id="tab-content-info">
+                                <h3>Label</h3>
+                                <input type="text" name="label" defaultValue={props.pageData.pageTitle}
+                                       className="hcMarginBottom2" onChange={handleChange}/>
+                                <h3>Description</h3>
+                                <textarea name="description" rows={4} defaultValue={props.pageData.description}
+                                          className="hcMarginBottom1" onChange={handleTextChange}/><br/>
+                                <button type="button" name="button" onClick={() => submit()}>
+                                    Save research
+                                </button>
+                                <button type="button" name="back" onClick={() => {
+                                    props.parentCallBack("ENTITY")
+                                }}>
+                                    Back
+                                </button>
+                            </div>) : (<div/>)
                         }
                         {/* tab: Dataset and entity */}
                         {tab === "set" ? (
-                        <div className="hcTabContent hcMarginTop2" id="tab-content-dataset">
-                            <h3>Dataset and entity</h3>
-                            <div>
-                                <div className="hc2columns hcMarginBottom2">
-                                    <div>
-                                        <div className="hcLabel">dataset</div>
-                                        {props.pageData.dataset}
-                                        {/*<div className="hcSmallTxt hcClrTxt_Grey">
+                            <div className="hcTabContent hcMarginTop2" id="tab-content-dataset">
+                                <h3>Dataset and entity</h3>
+                                <div>
+                                    <div className="hc2columns hcMarginBottom2">
+                                        <div>
+                                            <div className="hcLabel">dataset</div>
+                                            {props.pageData.dataset}
+                                            {/*<div className="hcSmallTxt hcClrTxt_Grey">
                                             Enriched version of the Index op ondertrouwregisters. Enrichment by
                                             Golden Agents.
                                         </div>*/}
+                                        </div>
+                                        <div>
+                                            <div className="hcLabel">entity</div>
+                                            {props.pageData.collection}
+                                        </div>
                                     </div>
-                                    <div>
-                                        <div className="hcLabel">entity</div>
-                                        {props.pageData.collection}
-                                    </div>
+                                    <button type="button" name="button">
+                                        Select data
+                                    </button>
                                 </div>
-                                <button type="button" name="button">
-                                    Select data
-                                </button>
-                            </div>
 
-                        </div>) : (<div/>)
+                            </div>) : (<div/>)
                         }
 
                         {/* tab: Filter */}
                         {tab === "filter" ? (
-                        <div className="hcTabContent hcMarginTop2 hcForm" id="tab-content-filter">
-                            <h3>Filter</h3>
+                            <div className="hcTabContent hcMarginTop2 hcForm" id="tab-content-filter">
+                                <h3>Filter</h3>
 
 
-                        </div>) : (<div/>)
+                            </div>) : (<div/>)
                         }
 
                         {/* tab: Sample */}
                         {tab === "sample" ? (
-                        <div className="hcTabContent hcMarginTop2" id="tab-content-sample">
-                            <h3>Sample</h3>
-                            <div className="hc2columns">
-                                <div>Only use a sample of this amount of records (-1 is no limit)</div>
-                                <div><input type="number" value="-1"/></div>
-                            </div>
-                        </div>) : (<div/>)
+                            <div className="hcTabContent hcMarginTop2" id="tab-content-sample">
+                                <h3>Sample</h3>
+                                <div className="hc2columns">
+                                    <div>Only use a sample of this amount of records (-1 is no limit)</div>
+                                    <div><input type="number" value="-1"/></div>
+                                </div>
+                            </div>) : (<div/>)
                         }
 
                         {/* tab: Relation */}
                         {tab === "relation" ? (
-                        <div className="hcTabContent hcMarginTop2" id="tab-content-relation">
-                            <h3>Relation</h3>
-                        </div>) : (<div/>)
+                            <div className="hcTabContent hcMarginTop2" id="tab-content-relation">
+                                <h3>Relation</h3>
+                            </div>) : (<div/>)
                         }
 
                     </div>
@@ -463,7 +524,8 @@ export function HcLlSelectDataset(props: { pageData: IModalSelectDatasetPage, pa
             <div className=" hc2columns">
                 <div className="hcList hcMarginBottom4 hcBasicSideMargin hcMaxhalf">
                     {props.pageData.datasetList.map(item => (
-                        <HcLlListItemMinimal2Fields fields={item} setIndex={props.pageData.setIndex} parentCallback={props.parentCallback}/>))}
+                        <HcLlListItemMinimal2Fields fields={item} setIndex={props.pageData.setIndex}
+                                                    parentCallback={props.parentCallback}/>))}
 
                 </div>
                 <div className="hcBasicSideMargin hcClrBg_Grey05 hcleftMark">
@@ -481,7 +543,7 @@ export function HcLlSelectDataset(props: { pageData: IModalSelectDatasetPage, pa
                     <div className="hcLabel">Entity</div>
                     <div className="hcList ">
                         {props.pageData.detailInfoEntities.map(item => (
-                            <HcLlListItemMinimal title={item.field} />))}
+                            <HcLlListItemMinimal title={item.field}/>))}
                     </div>
                 </div>
             </div>
