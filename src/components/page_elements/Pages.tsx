@@ -294,6 +294,15 @@ export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEv
 
     function newDataSelection() {
         const dataSet: IJobDataSet = defaultIJobDataSet();
+        if (formData.entity_type_selections == null) {
+            formData.entity_type_selections = [];
+        }
+        if (formData.lens_specs == null) {
+            formData.lens_specs = [];
+        }
+        if (formData.linkset_specs == null) {
+            formData.linkset_specs = [];
+        }
         dataSet.id = formData.entity_type_selections.length;
         formData.entity_type_selections.unshift(dataSet);
         sendJob(formData);

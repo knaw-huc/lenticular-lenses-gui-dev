@@ -6,9 +6,9 @@ export function defaultIJobDataSet() {
         dataset: {
             collection_id: "",
             dataset_id: "",
-            published: null,
+            published: false,
             timbuctoo_graphql: AUTH_SERVER,
-            timbuctoo_hsid: null
+            timbuctoo_hsid: "null"
         },
         id: -1,
         label: "",
