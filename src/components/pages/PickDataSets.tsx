@@ -17,7 +17,7 @@ import {
 } from "../../misc/interfaces";
 import {API_LOCATION, appName, GOLDEN_AGENTS_REPOSITORY} from "../../misc/config";
 
-export function PickDataSets(props: { parentCallBack: ISendEvent, jobData: IJob, setJob: ISetJobEvent, hsid: string | null }) {
+export function PickDataSets(props: { parentCallBack: ISendEvent, jobData: IJob, setJob: ISetJobEvent, dsIndex: number, hsid: string | null }) {
     const [loading, setLoading] = useState(true);
     const [refreshToggle, setRefreshToggle] = useState(true);
     const url = API_LOCATION + GOLDEN_AGENTS_REPOSITORY;
@@ -105,7 +105,7 @@ export function PickDataSets(props: { parentCallBack: ISendEvent, jobData: IJob,
             <HcHeaderGoldenAgents toolName={appName}
                                   projectName={props.jobData.job_title}/>
             {!loading ? (<HcModal parentCallBack={props.parentCallBack} modalName='Select dataset'>
-                    <HcLlSelectDataset pageData={pageData} parentCallback={setIndex} jobData={props.jobData} switchState={props.parentCallBack} setJob={props.setJob}/>
+                    <HcLlSelectDataset pageData={pageData} parentCallback={setIndex} jobData={props.jobData} switchState={props.parentCallBack} setJob={props.setJob} dsIndex={props.dsIndex}/>
                 </HcModal>) :
                 (<div className="loadClass">Loading...</div>)}
         </div>

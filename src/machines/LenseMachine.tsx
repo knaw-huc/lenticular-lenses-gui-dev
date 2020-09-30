@@ -109,6 +109,7 @@ export const lenseMachine = Machine<{
         dataset_detail: {
             on: {
                 ENTITY: "entity",
+                DATASETS: "datasets",
                 SET_JOB: {
                     actions: assign({jobData: (context, event: ISetJob) => event.value})
                 }

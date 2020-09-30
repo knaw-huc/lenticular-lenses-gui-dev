@@ -155,7 +155,7 @@ export function HcLlDataSelectionDetail(props: {pageData: IDataSelectionDetailPa
 {/* Modal select dataset */
 }
 
-export function HcLlSelectDataset(props: {pageData: IModalSelectDatasetPage, parentCallback: ISetIndex, jobData: IJob, switchState:ISendEvent, setJob: ISetJobEvent}) {
+export function HcLlSelectDataset(props: {pageData: IModalSelectDatasetPage, parentCallback: ISetIndex, jobData: IJob, switchState:ISendEvent, setJob: ISetJobEvent}, dsIndex: number) {
 
     return (
         <React.Fragment>
@@ -180,7 +180,7 @@ export function HcLlSelectDataset(props: {pageData: IModalSelectDatasetPage, par
                     <div className="hcLabel">Entity</div>
                     <div className="hcList ">
                         {props.pageData.detailInfoEntities.map(item => (
-                            <HcLlSelectEntityFromList title={item.field} setIndex={props.pageData.setIndex} jobData={props.jobData} switchState={props.switchState} setJob={props.setJob}/>))}
+                            <HcLlSelectEntityFromList title={item.field} setIndex={props.pageData.setIndex} jobData={props.jobData} switchState={props.switchState} setJob={props.setJob} dsIndex={props.dsIndex}/>))}
                     </div>
                 </div>
             </div>

@@ -280,7 +280,7 @@ export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEv
             const index: number = formData.entity_type_selections.length - 1;
             const struc: ISetBufferIndex = {
                 type: "SET_INDEX",
-                value: index
+                value: 0
             };
             props.setBufferIndex(struc);
             //console.log(formData.entity_type_selections.length);
@@ -293,7 +293,7 @@ export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEv
     function newDataSelection() {
         const dataSet: IJobDataSet = defaultIJobDataSet();
         dataSet.id = formData.entity_type_selections.length;
-        formData.entity_type_selections.push(dataSet);
+        formData.entity_type_selections.unshift(dataSet);
         sendJob(formData);
     }
 
@@ -377,6 +377,10 @@ export function HcLlDataSelectionDetail(props: { pageData: IDataSelectionDetailP
         } else {
             console.log(json);
         }
+    }
+
+    function selectEntity() {
+        props.parentCallBack("DATASETS");
     }
 
     function update_data(job: IJob) {
@@ -471,7 +475,7 @@ export function HcLlDataSelectionDetail(props: { pageData: IDataSelectionDetailP
                                             {props.pageData.collection}
                                         </div>
                                     </div>
-                                    <button type="button" name="button">
+                                    <button type="button" name="button" onClick={() => {selectEntity();}}>
                                         Select data
                                     </button>
                                 </div>

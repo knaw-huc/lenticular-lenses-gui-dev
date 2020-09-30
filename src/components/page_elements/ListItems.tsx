@@ -24,7 +24,7 @@ export function HcLlListItemMinimal(props: { title: string }) {
     );
 }
 
-export function HcLlSelectEntityFromList(props: { title: string, setIndex: string, jobData: IJob, switchState: ISendEvent, setJob: ISetJobEvent }) {
+export function HcLlSelectEntityFromList(props: { title: string, setIndex: string, jobData: IJob, switchState: ISendEvent, setJob: ISetJobEvent, dsIndex: number }) {
     let formData: IJob = {
         entity_type_selections: props.jobData.entity_type_selections,
         job_description: props.jobData.job_description,
@@ -59,11 +59,8 @@ export function HcLlSelectEntityFromList(props: { title: string, setIndex: strin
     return (
         <div className="hcEntityName" onClick={() => {
             const dataSet: IJobDataSet = defaultIJobDataSet();
-            dataSet.id = formData.entity_type_selections.length;
-            dataSet.dataset.dataset_id = props.setIndex;
-            dataSet.dataset.collection_id = props.title;
-            formData.entity_type_selections.push(dataSet);
-
+            formData.entity_type_selections[props.dsIndex].dataset.dataset_id = props.setIndex;
+            formData.entity_type_selections[props.dsIndex].dataset.collection_id = props.title;
             sendJob(formData);
         }}>
             {props.title}
