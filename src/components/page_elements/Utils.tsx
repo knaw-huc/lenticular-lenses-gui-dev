@@ -1,7 +1,7 @@
 import React from 'react';
 import {ISendEvent} from "../../misc/interfaces";
 
-export function HcLlSubNavigation(props: { pageTitle: string, isDs: boolean, isAl: boolean }) {
+export function HcLlSubNavigation(props: { pageTitle: string, isDs: boolean, isAl: boolean, goTo: ISendEvent }) {
     return (
         <div className="hcContentContainer hcMarginBottom4">
             <div className="hcRowJustifyTop">
@@ -9,8 +9,9 @@ export function HcLlSubNavigation(props: { pageTitle: string, isDs: boolean, isA
                     <h3>{props.pageTitle}</h3>
                 </div>
                 <div className="hcBasicSideMargin hcAlignRight hcGaTabsLoudness1">
-                    <a href="" className={(props.isDs ? 'hcSelected' : '')}>Data Selection</a>
-                    <a href="" className={(props.isAl ? 'hcSelected' : '')}>Alignment</a>
+                    <div className="hcTopMenu" onClick={() => {props.goTo("FETCH")}}>Edit research</div>
+                    <div className={(props.isDs ? 'hcSelected' : 'hcTopMenu')} onClick={() => props.goTo("ENTITY")}>Data Selection</div>
+                    <div className={(props.isAl ? 'hcSelected' : 'hcTopMenu')} onClick={() => props.goTo("ALIGNMENTS")}>Alignment</div>
                 </div>
             </div>
         </div>

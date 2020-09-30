@@ -50,7 +50,7 @@ export function HcLlSelectEntityFromList(props: { title: string, setIndex: strin
                 value: formData
             }
             props.setJob(sj);
-            props.switchState("ENTITY");
+            props.switchState("DATASET_DETAIL");
         } else {
             console.log(json);
         }
@@ -58,7 +58,6 @@ export function HcLlSelectEntityFromList(props: { title: string, setIndex: strin
 
     return (
         <div className="hcEntityName" onClick={() => {
-            const dataSet: IJobDataSet = defaultIJobDataSet();
             formData.entity_type_selections[props.dsIndex].dataset.dataset_id = props.setIndex;
             formData.entity_type_selections[props.dsIndex].dataset.collection_id = props.title;
             sendJob(formData);

@@ -66,7 +66,9 @@ export function HcLlLayoutHome(props: { pageData: IHomePage, parentCallBack: ISe
             const json: IJob = await response.json();
             const struc: ISetValue = {type: "SET_ID", value: json.job_id};
             props.setValue(struc);
-            props.parentCallBack("FETCH");
+            const jobStruc: ISetJob = {type: "SET_JOB", value: json};
+            props.setJob(jobStruc);
+            props.parentCallBack("ENTITY");
         } catch (err) {
             setError("Job not found! Try again with a correct job ID.");
         }
@@ -299,7 +301,7 @@ export function HcLlLayoutDataSelectionOverview(props: { parentCallBack: ISendEv
 
     return (<React.Fragment>
         <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
-                           isDs={props.pageData.pageNavDs}/>
+                           isDs={props.pageData.pageNavDs} goTo = {props.parentCallBack} />
 
         <div className="hcContentContainer hcMarginBottom2">
             <div className="hcRowJustify">
@@ -406,7 +408,7 @@ export function HcLlDataSelectionDetail(props: { pageData: IDataSelectionDetailP
 
     return (<React.Fragment>
             <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
-                               isDs={props.pageData.pageNavDs}/>
+                               isDs={props.pageData.pageNavDs} goTo={props.parentCallBack}/>
             {/*<div className="hcContentContainer hcMarginBottom3">
                 <div className="hcRowJustify">
                     <div className="hcBasicSideMargin">
@@ -441,10 +443,10 @@ export function HcLlDataSelectionDetail(props: { pageData: IDataSelectionDetailP
                         {tab === "info" ? (
                             <div className="hcTabContent hcMarginTop2 hcForm" id="tab-content-info">
                                 <h3>Label</h3>
-                                <input type="text" name="label" defaultValue={props.pageData.pageTitle}
+                                <input type="text" name="label" defaultValue={props.pageData.pageTitle} placeholder="Type name of your selection"
                                        className="hcMarginBottom2" onChange={handleChange}/>
                                 <h3>Description</h3>
-                                <textarea name="description" rows={4} defaultValue={props.pageData.description}
+                                <textarea name="description" rows={4} defaultValue={props.pageData.description} placeholder="Add your description"
                                           className="hcMarginBottom1" onChange={handleTextChange}/><br/>
                                 <button type="button" name="button" onClick={() => submit()}>
                                     Save research
@@ -560,13 +562,13 @@ export function HcLlSelectDataset(props: { pageData: IModalSelectDatasetPage, pa
 {/* Modal select dataset */
 }
 
-export function HcLlLayoutAlignmentOverview(props: { pageData: IAlignmentListPage }) {
+export function HcLlLayoutAlignmentOverview(props: { pageData: IAlignmentListPage, parentCallBack: ISendEvent }) {
 
     return (
         <React.Fragment>
 
             <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
-                               isDs={props.pageData.pageNavDs}/>
+                               isDs={props.pageData.pageNavDs}  goTo={props.parentCallBack}/>
 
             <div className="hcContentContainer hcMarginBottom2">
                 <div className="hcRowJustify">
@@ -619,11 +621,11 @@ export function HcLlLayoutAlignmentOverview(props: { pageData: IAlignmentListPag
 }
 
 
-export function HcLlAlignmentDetail(props: { pageData: IAlignmentDetailPage }) {
+export function HcLlAlignmentDetail(props: { pageData: IAlignmentDetailPage, parentCallBack: ISendEvent }) {
 
     return (<React.Fragment>
             <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isAl={props.pageData.pageNavAl}
-                               isDs={props.pageData.pageNavDs}/>
+                               isDs={props.pageData.pageNavDs} goTo={props.parentCallBack}/>
             <div className="hcContentContainer hcMarginBottom3">
                 <div className="hcRowJustify">
                     <div className="hcBasicSideMargin">

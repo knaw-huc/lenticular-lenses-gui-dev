@@ -14,7 +14,8 @@ export const lenseMachine = Machine<{
         fetch: {},
         entity: {},
         datasets: {},
-        dataset_detail: {}
+        dataset_detail: {},
+        alignments: {}
     }
 }>({
     id: "lenticularLens",
@@ -40,14 +41,15 @@ export const lenseMachine = Machine<{
         create: "create",
         fetch: "fetch",
         datasets: "datasets",
-        dataset_detail: "dataset_detail"
+        dataset_detail: "dataset_detail",
+        alignments: "alignments"
     },
     states: {
         idle: {},
         research: {
             on: {
                 NEW: "create",
-                FETCH: "fetch",
+                ENTITY: "entity",
                 SET_ID: {
                     actions: assign({jobID: (context, event: ISetValue) => event.value})
                 },
@@ -87,6 +89,8 @@ export const lenseMachine = Machine<{
             on: {
                 DATASETS: "datasets",
                 DATASET_DETAIL: "dataset_detail",
+                ALIGNMENTS: "alignments",
+                FETCH: "fetch",
                 SET_JOB: {
                     actions: assign({jobData: (context, event: ISetJob) => event.value})
                 },
@@ -97,7 +101,7 @@ export const lenseMachine = Machine<{
         },
         datasets: {
             on: {
-                ENTITY: "entity",
+                DATASET_DETAIL: "dataset_detail",
                 SET_JOB: {
                     actions: assign({jobData: (context, event: ISetJob) => event.value})
                 },
@@ -109,10 +113,18 @@ export const lenseMachine = Machine<{
         dataset_detail: {
             on: {
                 ENTITY: "entity",
+                ALIGNMENTS: "alignments",
                 DATASETS: "datasets",
+                FETCH: "fetch",
                 SET_JOB: {
                     actions: assign({jobData: (context, event: ISetJob) => event.value})
                 }
+            }
+        },
+        alignments: {
+            on: {
+                ENTITY: "entity",
+                FETCH: "fetch"
             }
         }
     }

@@ -1668,6 +1668,15 @@ width: 80px;
 cursor: pointer;
 }
 
+.hcTopMenu{
+cursor: pointer;
+margin-left: 10px;
+}
+
+.hcSelected{
+margin-left: 20px;
+}
+
 .hcListActionItem {
 color: #0087d4;
 display: inline;

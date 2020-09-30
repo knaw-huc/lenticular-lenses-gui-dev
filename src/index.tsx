@@ -10,6 +10,7 @@ import {StateMachineComponent} from './renderMachine';
 import {lenseMachine} from "./machines/LenseMachine";
 import {NewProject} from "./components/pages/newProject";
 import {EditProjectBasics} from "./components/pages/editProjectBasics";
+import Alignments from "./components/pages/alignments";
 import {interpret} from "xstate";
 import {
     ISendEvent,
@@ -58,6 +59,7 @@ ReactDOM.render(
                 "entity": ({state}) => <EntitySelection parentCallBack={switchState} jobData={state.context.jobData} setJob={setContextJob} setBufferIndex={setContextIndex}/>,
                 "datasets" : ({state}) => <PickDataSets parentCallBack={switchState} jobData={state.context.jobData} setJob={setContextJob} dsIndex={state.context.bufferedIndex} hsid={qsHSID}/>,
                 "dataset_detail" : ({state}) => <DataSetDetail parentCallBack={switchState} jobData={state.context.jobData} setJob={setContextJob} dsIndex={state.context.bufferedIndex}/>,
+                "alignments" : ({state}) => <Alignments goTo={switchState} jobData={state.context.jobData}/>,
                 "": ({state}) => <div>The GUI for {state.value} is not yet defined</div>
             })}
     </div>,

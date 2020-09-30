@@ -6,17 +6,17 @@ import {
     AlignmentLinkComparePage,
     IAlignmentDetailPage,
     IAlignmentListPage,
-    IClusterViewPage
+    IClusterViewPage, ISendEvent
 } from "../../misc/interfaces";
 const tempImg = require("../../images/ga-ll-tempNetwork.svg");
 
 
-export function HcLlLayoutAlignmentOverview(props: {pageData: IAlignmentListPage}) {
+export function HcLlLayoutAlignmentOverview(props: {pageData: IAlignmentListPage, goTo: ISendEvent}) {
 
         return (
             <React.Fragment>
 
-                <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isDs={props.pageData.pageNavDs} isAl={props.pageData.pageNavAl} />
+                <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isDs={props.pageData.pageNavDs} isAl={props.pageData.pageNavAl}  goTo={props.goTo}/>
 
                 <div className="hcContentContainer hcMarginBottom2">
                     <div className="hcRowJustify">
@@ -71,10 +71,10 @@ export function HcLlLayoutAlignmentOverview(props: {pageData: IAlignmentListPage
 
 
 
-export function HcLlAlignmentDetail(props: {pageData: IAlignmentDetailPage}) {
+export function HcLlAlignmentDetail(props: {pageData: IAlignmentDetailPage, parentCallBack: ISendEvent}) {
 
         return (<React.Fragment>
-                <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isDs={props.pageData.pageNavDs} isAl={props.pageData.pageNavAl} />
+                <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isDs={props.pageData.pageNavDs} isAl={props.pageData.pageNavAl}  goTo={props.parentCallBack}/>
 
                 <HcLlAlignmantInfoBar
                     infoSources={props.pageData.infoSources}  infoTargets={props.pageData.infoTargets} infoLinks={props.pageData.infoLinks} infoClusters={props.pageData.infoClusters}

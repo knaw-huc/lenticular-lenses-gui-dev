@@ -21,11 +21,11 @@ import {
 import {IJob} from "../../misc/apiInterfaces";
 
 
-export function HcLlLayoutDataSelectionOverview(props: {pageData: IDataSelectionListPage}) {
+export function HcLlLayoutDataSelectionOverview(props: {pageData: IDataSelectionListPage, parentCallBack: ISendEvent}) {
 
     return (<React.Fragment>
         <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isDs={props.pageData.pageNavDs}
-                           isAl={props.pageData.pageNavAl}/>
+                           isAl={props.pageData.pageNavAl}  goTo={props.parentCallBack}/>
 
         <div className="hcContentContainer hcMarginBottom2">
             <div className="hcRowJustify">
@@ -69,11 +69,11 @@ export function HcLlLayoutDataSelectionOverview(props: {pageData: IDataSelection
 }
 
 
-export function HcLlDataSelectionDetail(props: {pageData: IDataSelectionDetailPage}) {
+export function HcLlDataSelectionDetail(props: {pageData: IDataSelectionDetailPage, parentCallBack: ISendEvent}) {
 
     return (<React.Fragment>
             <HcLlSubNavigation pageTitle={props.pageData.pageTitle} isDs={props.pageData.pageNavDs}
-                               isAl={props.pageData.pageNavAl}/>
+                               isAl={props.pageData.pageNavAl}  goTo={props.parentCallBack}/>
 
 
             <div className="hcContentContainer hcMarginBottom5">
@@ -155,7 +155,7 @@ export function HcLlDataSelectionDetail(props: {pageData: IDataSelectionDetailPa
 {/* Modal select dataset */
 }
 
-export function HcLlSelectDataset(props: {pageData: IModalSelectDatasetPage, parentCallback: ISetIndex, jobData: IJob, switchState:ISendEvent, setJob: ISetJobEvent}, dsIndex: number) {
+export function HcLlSelectDataset(props: {pageData: IModalSelectDatasetPage, parentCallback: ISetIndex, jobData: IJob, switchState:ISendEvent, setJob: ISetJobEvent, dsIndex: number}) {
 
     return (
         <React.Fragment>

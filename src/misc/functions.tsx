@@ -11,8 +11,8 @@ export function defaultIJobDataSet() {
             timbuctoo_hsid: null
         },
         id: -1,
-        label: "New data selection",
-        description: "Description",
+        label: "",
+        description: "",
         filter: {
             conditions: [{
                 property: []
